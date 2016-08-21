@@ -70,6 +70,7 @@ function updateChart(newData = data) {
 
   // ENTER + UPDATE
   binding.merge(entering)
+    .transition()
       .attr('r', 5.5)
       .attr('cx', function(d) { return x(d.x); })
       .attr('cy', function(d) { return y(d.y); })
