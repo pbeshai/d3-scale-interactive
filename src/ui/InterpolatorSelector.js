@@ -15,7 +15,7 @@ function d3Interpolators() {
     'interpolateYlOrBr', 'interpolateYlOrRd'];
 
   // filter only those available in case d3-scale-chromatic not there
-  return list.filter(name => window.d3[name]);
+  return list.filter(name => (window.d3 ? window.d3[name] : true));
 }
 
 export default class InterpolatorSelector {

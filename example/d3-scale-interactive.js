@@ -488,7 +488,7 @@ function d3ColorSchemes() {
 
   // filter only those available in case d3-scale-chromatic not there
   return list.filter(function (name) {
-    return window.d3[name];
+    return window.d3 ? window.d3[name] : true;
   });
 }
 
@@ -643,7 +643,7 @@ function d3Interpolators() {
 
   // filter only those available in case d3-scale-chromatic not there
   return list.filter(function (name) {
-    return window.d3[name];
+    return window.d3 ? window.d3[name] : true;
   });
 }
 
