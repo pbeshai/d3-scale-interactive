@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interactive Scales</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="d3-scale-interactive.css" />
+    <style>
+
+    body {
+      font: 14px sans-serif;
+      padding: 15px;
+    }
+
+    .description {
+      max-width: 800px;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Interactive Scales</h1>
+    <div class='chart-container'></div>
+    <h4>Idea</h4>
+    <div class="description">
+    <p>The idea: what if you could interactively play with your scales in any vis, just by replacing your initialization
+     of the scales from
+     <pre>const colorScale = d3.scaleSequential(...);</pre> with
+     <pre>const colorScale = d3.scaleInteractive('color', updateChart).scaleSequential(...);</pre>
+     This way it's easy to develop with/turn
+     on and off. Maybe there could even be a check to see if we're in dev otherwise just return the scale as it is and
+     do nothing.
+    </p>
+    <h4>Example</h4>
+    <pre>color = d3.scaleInteractive('color', updateChart)
+  .scaleSequential(d3.interpolateMagma)
+  .domain(d3.extent(data, d => d.v));
+</pre>
+    <p>
+      <a href="https://github.com/pbeshai/d3-scale-interactive">Code on GitHub</a>
+    </p>
+  </div>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="d3-scale-interactive.js"></script>
+<script src="scatterplot.js"></script>
+
+</script>
+</body>
+</html>
