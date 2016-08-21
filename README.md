@@ -2,6 +2,9 @@
 
 ## This is currently very experimental.
 
+Demo: http://peterbeshai.com/vis/d3-scale-interactive/
+
+
 ## Idea
 
 Idea
