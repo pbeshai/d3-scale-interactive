@@ -18,13 +18,14 @@
     "url": "https://github.com/pbeshai/d3-scale-interactive.git"
   },
   "scripts": {
-    "build": "rm -rf build && mkdir build && rollup --config rollup.config.js",
+    "build": "rm -rf build && mkdir build && rollup --config rollup.config.js && npm run css",
+    "css": "cp src/d3-scale-interactive.css build/d3-scale-interactive.css && cp src/d3-scale-interactive.css example/d3-scale-interactive.css",
     "watch": "rollup --config rollup.config.js --watch",
     "lint": "eslint -c .eslintrc.js src",
     "pretest": "npm run build",
     "test": "tape 'test/**/*-test.js'",
     "prepublish": "npm run lint && npm run test && uglifyjs build/d3-scale-interactive.js -c -m -o build/d3-scale-interactive.min.js",
-    "postpublish": "zip -j build/d3-scale-interactive.zip -- LICENSE README.md build/d3-scale-interactive.js build/d3-scale-interactive.min.js"
+    "postpublish": "zip -j build/d3-scale-interactive.zip -- LICENSE README.md build/d3-scale-interactive.js build/d3-scale-interactive.min.js build/d3-scale-interactive.css"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
