@@ -6,6 +6,7 @@
 
 Demo: http://peterbeshai.com/vis/d3-scale-interactive/
 
+![d3-scale-interactive demo](http://peterbeshai.com/vis/d3-scale-interactive/d3-scale-interactive-demo.gif)
 
 ## Idea
 
