@@ -66,10 +66,14 @@ function updateChart(newData = data) {
   var binding = svg.selectAll('.dot').data(newData);
 
   // ENTER
-  var entering = binding.enter().append('circle').classed('dot', true);
+  var entering = binding.enter().append('circle')
+    .classed('dot', true)
+    .attr('cx', function(d) { return x(d.x); })
+    .attr('cy', function(d) { return y(d.y); })
 
   // ENTER + UPDATE
   binding.merge(entering)
+    .transition()
       .attr('r', 5.5)
       .attr('cx', function(d) { return x(d.x); })
       .attr('cy', function(d) { return y(d.y); })
