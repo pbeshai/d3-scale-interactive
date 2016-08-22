@@ -1,5 +1,7 @@
 # d3-scale-interactive
 
+[![npm version](https://badge.fury.io/js/d3-scale-interactive.svg)](https://badge.fury.io/js/d3-scale-interactive)
+
 ## This is currently very experimental.
 
 Demo: http://peterbeshai.com/vis/d3-scale-interactive/
@@ -61,12 +63,10 @@ Go to http://localhost:8000
 
 ## Installing
 
-*Not yet on NPM! Some day this will be true...*
-
 If you use NPM, `npm install d3-scale-interactive`. Otherwise, download the [latest release](https://github.com/pbeshai/d3-scale-interactive/releases/latest).
 
 ## API Reference
 
-*Not complete yet!*
+*Not complete yet. See the example or the source code.*
 
 <a href="#scale-interactive" name="scale-interactive">#</a> <b>scaleInteractive</b>(name, updateFunction)
