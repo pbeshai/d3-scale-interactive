@@ -40,12 +40,6 @@ color = d3.scaleInteractive('color', updateChart)
   .domain(d3.extent(data, d => d.v));
 ```
 
-## Things to consider
-
-1. domain/range length 2? = show two input boxes that you can drag to change value, otherwise expand to 'eval' string
-1. Add in histogram for statistics
-1. Show d3 code on demand
-
 
 ## Development
 
