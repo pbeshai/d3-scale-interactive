@@ -42,11 +42,19 @@ export default class MainContainer {
 
     // add in CSS
     this.root.append('style').attr('class', 'd3-scale-interactive-style').text(css);
+
+    // resize height on window resize
+    select(window).on('resize', () => { this.updateHeight(); });
   }
 
   toggleView() {
     this.visible = !this.visible;
     this.render();
+  }
+
+  updateHeight() {
+    // set the max height
+    this.root.style('max-height', `${window.innerHeight}px`);
   }
 
   renderScales() {
@@ -63,7 +71,7 @@ export default class MainContainer {
     }
 
     // set the max height
-    this.root.style('max-height', `${window.innerHeight}px`);
+    this.updateHeight();
 
     this.root
       .classed(className('visible'), this.visible)
