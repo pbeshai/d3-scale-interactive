@@ -1,4 +1,13 @@
-const ignoreKeysOnRead = ['copy'];
+const ignoreKeysOnRead = [
+  'bandwidth',
+  'copy',
+  'nice',
+  'quantiles',
+  'rangeRound',
+  'step',
+  'ticks',
+  'tickFormat',
+];
 
 /**
  * Copy from the readScales to the writeScale
