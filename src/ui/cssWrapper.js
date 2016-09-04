@@ -12,6 +12,7 @@ export default `
   font-size: 12px;
   width: 280px;
   color: #fff;
+  overflow: auto;
 }
 
 .d3-scale-interactive-hidden .d3-scale-interactive-main-inner {

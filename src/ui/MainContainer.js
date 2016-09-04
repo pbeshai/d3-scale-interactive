@@ -62,6 +62,9 @@ export default class MainContainer {
       this.setup();
     }
 
+    // set the max height
+    this.root.style('max-height', `${window.innerHeight}px`);
+
     this.root
       .classed(className('visible'), this.visible)
       .classed(className('hidden'), !this.visible);
