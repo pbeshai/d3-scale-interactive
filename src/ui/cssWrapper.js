@@ -91,8 +91,48 @@ export default `
 }
 
 .d3-scale-interactive-panel input {
-  width: 98%;
-  font-family: 'Source Code Pro', 'Monaco', 'courier new', monospace;
+  font-family: 'Source Code Pro', 'Monaco', 'Consolas', monospace;
+}
+
+.d3-scale-interactive-input-entry-field {
+  width: 150px;
+  margin-bottom: 4px;
+}
+
+.d3-scale-interactive-input-entry-add,
+.d3-scale-interactive-input-entry-remove {
+  display: inline-block;
+  padding: 5px;
+  background: #333;
+  border-radius: 100%;
+  height: 10px;
+  width: 10px;
+  text-align: center;
+  line-height: 10px;
+  font-weight: normal;
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.d3-scale-interactive-input-entry-add:hover,
+.d3-scale-interactive-input-entry-remove:hover {
+  background: #111;
+  color: #fff;
+}
+
+.d3-scale-interactive-input-entry-color {
+  width: 30px;
+  margin-left: 5px;
+  outline: 0;
+  background: transparent;
+  border: 0;
+  height: 19px;
+}
+
+.d3-scale-interactive-input-entry-remove.d3-scale-interactive-hidden,
+.d3-scale-interactive-input-entry-color.d3-scale-interactive-hidden {
+  display: none;
 }
 
 .d3-scale-interactive-reset-button {
@@ -100,15 +140,17 @@ export default `
   font-size: 10px;
   text-transform: uppercase;
   display: inline-block;
-  padding: 4px 12px;
+  padding: 6px 12px;
   font-weight: 200;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #333;
+  color: #aaa;
   cursor: pointer;
   margin: -4px -4px 0 0;
 }
 
 .d3-scale-interactive-reset-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #111;
+  color: #fff;
 }
 
 .d3-scale-interactive-color-bar-box {

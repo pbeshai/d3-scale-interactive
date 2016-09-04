@@ -3,11 +3,9 @@ import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import { color } from 'd3-color';
 import { className, renderComponent } from './utils';
+import ArrayInput from './ArrayInput';
 import ColorBar from './ColorBar';
 import ColorSchemeSelector from './ColorSchemeSelector';
-
-// https://github.com/rollup/rollup/wiki/Troubleshooting#avoiding-eval
-const eval2 = eval;
 
 export default class RangeInput {
   constructor(parent, props) {
@@ -23,19 +21,10 @@ export default class RangeInput {
   }
 
   setup() {
-    const that = this;
     // create the main panel div
     this.root = select(this.parent)
       .append('div')
         .attr('class', className('range-input'));
-
-    this.input = this.root.append('input')
-      .attr('class', className('input-field'))
-      .attr('type', 'text')
-      .on('change', function change() {
-        const value = eval2(this.value);
-        that.props.onChange(value);
-      });
   }
 
   handleColorSchemeChange(scheme) {
@@ -80,13 +69,17 @@ export default class RangeInput {
   }
 
   render() {
-    const { range } = this.props;
+    const { range, onChange } = this.props;
 
     if (!this.root) {
       this.setup();
     }
 
-    this.input.property('value', JSON.stringify(range));
+    this.arrayInput = renderComponent(this.arrayInput, ArrayInput, this.root.node(), {
+      values: range,
+      minLength: 2,
+      onChange,
+    });
 
     this.renderColorBar();
     this.renderColorSchemeSelector();

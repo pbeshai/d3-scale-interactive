@@ -1,8 +1,6 @@
 import { select } from 'd3-selection';
-import { className } from './utils';
-
-// https://github.com/rollup/rollup/wiki/Troubleshooting#avoiding-eval
-const eval2 = eval;
+import { className, renderComponent } from './utils';
+import ArrayInput from './ArrayInput';
 
 export default class DomainInput {
   constructor(parent, props) {
@@ -16,19 +14,10 @@ export default class DomainInput {
   }
 
   setup() {
-    const that = this;
     // create the main panel div
     this.root = select(this.parent)
       .append('div')
         .attr('class', className('domain-input'));
-
-    this.input = this.root.append('input')
-      .attr('class', className('input-field'))
-      .attr('type', 'text')
-      .on('change', function change() {
-        const value = eval2(this.value);
-        that.props.onChange(value);
-      });
   }
 
   render() {
@@ -36,6 +25,11 @@ export default class DomainInput {
       this.setup();
     }
 
-    this.input.property('value', JSON.stringify(this.props.domain));
+    const { domain, onChange } = this.props;
+    this.arrayInput = renderComponent(this.arrayInput, ArrayInput, this.root.node(), {
+      values: domain,
+      minLength: 2,
+      onChange,
+    });
   }
 }
