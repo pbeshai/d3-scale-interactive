@@ -62,8 +62,10 @@ export default class MainContainer {
       this.setup();
     }
 
-    this.root.classed(className('visible'), this.visible);
-    this.root.classed(className('hidden'), !this.visible);
+    this.root
+      .classed(className('visible'), this.visible)
+      .classed(className('hidden'), !this.visible);
+
     this.toggle.text(this.visible ? 'Hide scales' : 'Show d3-scale-interactive');
 
     this.renderScales();

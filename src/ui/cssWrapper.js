@@ -18,7 +18,6 @@ export default `
   display: none;
 }
 
-
 .d3-scale-interactive-main-inner {
   min-height: 50px;
 }
@@ -46,6 +45,18 @@ export default `
   border-bottom: 1px solid #111;
 }
 
+.d3-scale-interactive-hidden .d3-scale-interactive-panel-inner {
+  display: none;
+}
+
+.d3-scale-interactive-hidden .d3-scale-interactive-reset-button {
+  display: none;
+}
+
+.d3-scale-interactive-hidden.d3-scale-interactive-panel {
+  padding-bottom: 0;
+}
+
 .d3-scale-interactive-panel:last-child {
   margin-bottom: 0;
 }
@@ -59,9 +70,15 @@ export default `
 }
 
 .d3-scale-interactive-panel h3 {
-  margin: 0 0 5px;
+  padding: 5px;
+  margin: -5px -5px 0;
   font-size: 12px;
   text-transform: uppercase;
+  cursor: pointer;
+}
+
+.d3-scale-interactive-panel h3:hover {
+  background: #444;
 }
 
 .d3-scale-interactive-panel h4 {

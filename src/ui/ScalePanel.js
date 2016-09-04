@@ -9,6 +9,7 @@ export default class ScalePanel {
   constructor(parent, props) {
     this.parent = parent;
     this.scaleProxy = props.scaleProxy;
+    this.visible = true;
 
     // bind handlers
     this.handleTypeChange = this.handleTypeChange.bind(this);
@@ -16,6 +17,7 @@ export default class ScalePanel {
     this.handleDomainChange = this.handleScalePropertyChange.bind(this, 'domain');
     this.handleRangeChange = this.handleScalePropertyChange.bind(this, 'range');
     this.handleInterpolatorChange = this.handleScalePropertyChange.bind(this, 'interpolator');
+    this.toggleView = this.toggleView.bind(this);
 
     this.renderTypeSelector = this.renderTypeSelector.bind(this);
     this.renderDomainInput = this.renderDomainInput.bind(this);
@@ -49,7 +51,8 @@ export default class ScalePanel {
       .on('click', () => this.scaleProxy.reset());
 
     this.header = this.root.append('h3')
-      .attr('class', className('panel-header'));
+      .attr('class', className('panel-header'))
+      .on('click', this.toggleView);
 
     this.inner = this.root.append('div')
       .attr('class', className('panel-inner'));
@@ -59,6 +62,11 @@ export default class ScalePanel {
       .attr('class', className('panel-items'));
 
     this.items = {};
+  }
+
+  toggleView() {
+    this.visible = !this.visible;
+    this.render();
   }
 
   handleTypeChange(newType) {
@@ -145,6 +153,10 @@ export default class ScalePanel {
     if (!this.root) {
       this.setup();
     }
+
+    this.root
+      .classed(className('visible'), this.visible)
+      .classed(className('hidden'), !this.visible);
 
     this.header.text(this.scaleProxy.name);
     this.renderItems();
