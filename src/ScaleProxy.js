@@ -1,4 +1,5 @@
 import { dispatch } from 'd3-dispatch';
+import { extent } from 'd3-array';
 import * as d3Scale from 'd3-scale';
 import supportedScales from './supportedScales';
 import readFromScale from './readFromScale';
@@ -61,6 +62,20 @@ export default class ScaleProxy {
       this.originalScale = scale.copy();
       this.originalScaleType = scaleType;
     }
+
+    // handle special conversions
+    if (this.scaleType === 'scaleSequential') {
+      // sequential doesn't have a range, so take the ends of the domain to initialize our range
+      if (scale.range) {
+        const domain = this.scale.domain();
+        scale.range(domain.map(d => this.scale(d)));
+      }
+    } else if (this.scaleType === 'scaleOrdinal') {
+      // map the domain to the extent so we don't get a hundred entries
+      scale.domain(extent(this.scale.domain()));
+    }
+
+
     this.scaleType = scaleType;
     this.scale = scale;
     this.updateProxyScaleFunctions(scale);
