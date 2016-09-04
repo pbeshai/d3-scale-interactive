@@ -99,6 +99,10 @@ export default `
   margin-bottom: 4px;
 }
 
+.d3-scale-interactive-input-entry-field.d3-scale-interactive-draggable {
+  cursor: ns-resize;
+}
+
 .d3-scale-interactive-input-entry-add,
 .d3-scale-interactive-input-entry-remove {
   display: inline-block;
