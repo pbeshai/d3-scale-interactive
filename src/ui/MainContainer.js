@@ -1,7 +1,7 @@
 import { select } from 'd3-selection';
 import { className, renderComponent } from './utils';
 import ScalePanel from './ScalePanel';
-
+import css from './cssWrapper';
 
 export default class MainContainer {
   constructor(parent, props) {
@@ -39,6 +39,9 @@ export default class MainContainer {
     this.toggle = this.root.append('div')
       .attr('class', className('main-toggle'))
       .on('click', this.toggleView);
+
+    // add in CSS
+    this.root.append('style').attr('class', 'd3-scale-interactive-style').text(css);
   }
 
   toggleView() {

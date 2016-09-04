@@ -1,3 +1,8 @@
+/**
+ * Easy way to get CSS in the JS by appending it to the body during
+ * construction of the UI
+ */
+export default `
 .d3-scale-interactive-main {
   font-weight: 200;
   position: fixed;
@@ -32,9 +37,7 @@
 .d3-scale-interactive-main-toggle:hover {
   background: #444;
   color: #fff;
-
 }
-
 
 .d3-scale-interactive-panel {
   background: rgba(0, 0, 0, 0.3);
@@ -74,8 +77,6 @@
   font-family: 'Source Code Pro', 'Monaco', 'courier new', monospace;
 }
 
-
-
 .d3-scale-interactive-reset-button {
   float: right;
   font-size: 10px;
@@ -97,3 +98,4 @@
   height: 15px;
   border-radius: 0;
 }
+`;
