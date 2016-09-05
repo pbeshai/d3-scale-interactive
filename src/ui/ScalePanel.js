@@ -96,6 +96,7 @@ export default class ScalePanel {
     this.rangeInput = renderComponent(this.rangeInput, RangeInput, parentNode, {
       range: this.scaleProxy.proxyScale.range(),
       onChange: this.handleRangeChange,
+      domain: this.scaleProxy.proxyScale.domain(),
     });
   }
 

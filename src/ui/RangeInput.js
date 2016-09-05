@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+import { range as d3Range } from 'd3-array';
 import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import { color } from 'd3-color';
@@ -25,6 +26,43 @@ export default class RangeInput {
     this.root = select(this.parent)
       .append('div')
         .attr('class', className('range-input'));
+
+    this.inner = this.root.append('div');
+
+    this.controls = this.root.append('div')
+      .attr('class', className('domain-controls'));
+
+    this.matchDomain = this.controls.append('button')
+      .text('Match Domain Length')
+      .on('click', () => this.handleMatchDomain());
+  }
+
+  // match the length including the end points (note that range isn't always numbers)
+  handleMatchDomain() {
+    const { domain, range, onChange } = this.props;
+
+    if (domain.length === range.length) {
+      return;
+    }
+
+    const rangeMin = range[0];
+    const rangeMax = range[range.length - 1];
+    const step = Math.round(1000 * ((rangeMax - rangeMin) / (domain.length - 1))) / 1000;
+
+    let matched;
+    // non-number solution - just copy the last element or truncate the array
+    if (isNaN(step)) {
+      const numToAdd = domain.length - range.length;
+      if (numToAdd > 0) { // adding elements
+        matched = [...range, ...d3Range(numToAdd).map(() => range[range.length - 1])];
+      } else { // removing elements
+        matched = range.slice(0, domain.length);
+      }
+    } else {
+      matched = d3Range(rangeMin, rangeMax, step).concat(rangeMax);
+    }
+
+    onChange(matched);
   }
 
   handleColorSchemeChange(scheme) {
@@ -46,7 +84,7 @@ export default class RangeInput {
 
   renderColorBar() {
     if (this.isColorRange()) {
-      this.colorBar = renderComponent(this.colorBar, ColorBar, this.root.node(), {
+      this.colorBar = renderComponent(this.colorBar, ColorBar, this.inner.node(), {
         colors: this.props.range,
       });
     } else if (this.colorBar) {
@@ -58,7 +96,7 @@ export default class RangeInput {
   renderColorSchemeSelector() {
     if (this.isColorRange()) {
       this.colorSchemeSelector = renderComponent(this.colorSchemeSelector, ColorSchemeSelector,
-        this.root.node(), {
+        this.inner.node(), {
           scheme: null,
           onChange: this.handleColorSchemeChange,
         });
@@ -75,7 +113,7 @@ export default class RangeInput {
       this.setup();
     }
 
-    this.arrayInput = renderComponent(this.arrayInput, ArrayInput, this.root.node(), {
+    this.arrayInput = renderComponent(this.arrayInput, ArrayInput, this.inner.node(), {
       values: range,
       minLength: 2,
       onChange,
