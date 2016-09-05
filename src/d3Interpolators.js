@@ -1,3 +1,8 @@
+import * as d3Scale from 'd3-scale';
+import * as d3ScaleChromatic from 'd3-scale-chromatic';
+
+const scaleKeys = Object.keys(d3Scale).concat(Object.keys(d3ScaleChromatic));
+
 /**
  * Function that lists available interpolators
  */
@@ -15,5 +20,5 @@ export default function d3Interpolators() {
     'interpolateYlOrBr', 'interpolateYlOrRd'];
 
   // filter only those available in case d3-scale-chromatic not there
-  return list.filter(name => (window.d3 ? window.d3[name] : true));
+  return list.filter(name => scaleKeys.includes(name));
 }
