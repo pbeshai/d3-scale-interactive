@@ -141,14 +141,10 @@ export default class ScaleProxy {
    *
    * @param {Function} scale The new active scale to set (e.g. d3.scaleLinear())
    * @param {String} [scaleType] A key for identifying the type of scale being set
+   * @param {Boolean} [skipUpdate=false] Skip update, typically used if called from user code.
    * @return {Function} the proxy scale
    */
-  changeScale(scale, scaleType) {
-    if (this.originalScale === null) {
-      this.originalScale = scale.copy();
-      this.originalScaleType = scaleType;
-    }
-
+  changeScale(scale, scaleType, skipUpdate) {
     // handle special conversions
     if (this.scaleType === 'scaleSequential') {
       // sequential doesn't have a range, so take the ends of the domain to initialize our range
@@ -167,7 +163,9 @@ export default class ScaleProxy {
     this.updateProxyScaleFunctions(scale);
     this.statsReset();
 
-    this.update();
+    if (!skipUpdate) {
+      this.update();
+    }
 
     return this.proxyScale;
   }
@@ -176,9 +174,9 @@ export default class ScaleProxy {
    * Once the initial scale has been set up, save it with this function
    * to get reset working properly.
    */
-  saveAsOriginalScale() {
-    this.originalScale = this.scale.copy();
-    this.originalScaleType = this.scaleType;
+  saveOriginalScale(scale = this.scale, scaleType = this.scaleType) {
+    this.originalScale = scale.copy();
+    this.originalScaleType = scaleType;
   }
 
   /**
@@ -189,6 +187,10 @@ export default class ScaleProxy {
    * @return {Function} the proxy scale
    */
   changeScaleType(scaleType) {
+    if (this.originalScale === null) {
+      this.saveOriginalScale();
+    }
+
     const newScale = readFromScale(d3Scale[scaleType](), this.scale, defaultScales[scaleType]);
 
     // ensure minimum domain is non-zero for log scale
@@ -208,6 +210,10 @@ export default class ScaleProxy {
    * @return {Function} the proxy scale
    */
   changeScaleProperty(property, value) {
+    if (this.originalScale === null) {
+      this.saveOriginalScale();
+    }
+
     this.proxyScale[property](value);
     this.statsReset();
     this.update();
@@ -317,7 +323,7 @@ ScaleProxy.prototype.supportedScales = supportedScales;
 supportedScales.forEach(scaleFuncName => {
   // e.g. set this.scaleLinear
   ScaleProxy.prototype[scaleFuncName] = function supportedScale(...args) {
-    return this.changeScale(d3Scale[scaleFuncName](...args), scaleFuncName);
+    return this.changeScale(d3Scale[scaleFuncName](...args), scaleFuncName, true);
   };
 });
 

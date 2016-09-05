@@ -38,14 +38,8 @@ export default function scaleInteractive(name, update) {
 
   mainContainer.addScale(scaleProxy);
 
-
-  // wait until next tick before listening for chart updates to ensure chart gets
-  // set up properly. Otherwise, this calls `update` right after d3.scaleInteractive()
-  // and the rest of the scale hasn't even been defined yet.
-  setTimeout(() => {
-    scaleProxy.saveAsOriginalScale();
-    scaleProxy.on('update.chart', () => { update(); });
-  }, 0);
+  // listen for updates and update the chart accordingly
+  scaleProxy.on('update.chart', () => { update(); });
 
   return scaleProxy;
 }
