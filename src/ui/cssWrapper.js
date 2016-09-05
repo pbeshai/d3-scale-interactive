@@ -63,6 +63,11 @@ export default `
   padding-bottom: 0;
 }
 
+.d3-scale-interactive-hidden.d3-scale-interactive-panel h3 {
+  color: #ccc;
+  font-weight: 200;
+}
+
 .d3-scale-interactive-panel:last-child {
   margin-bottom: 0;
 }
@@ -85,6 +90,8 @@ export default `
 
 .d3-scale-interactive-panel h3:hover {
   background: #444;
+  color: #fff;
+  font-weight: 600;
 }
 
 .d3-scale-interactive-panel h4 {
