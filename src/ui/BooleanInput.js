@@ -1,7 +1,5 @@
 import { select } from 'd3-selection';
-import { range as d3Range } from 'd3-array';
-import { className, renderComponent } from './utils';
-import ArrayInput from './ArrayInput';
+import { className } from './utils';
 
 export default class BooleanInput {
   constructor(parent, props) {

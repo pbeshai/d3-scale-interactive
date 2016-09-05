@@ -5,6 +5,7 @@ import DomainInput from './DomainInput';
 import RangeInput from './RangeInput';
 import InterpolatorInput from './InterpolatorInput';
 import BooleanInput from './BooleanInput';
+import NumberInput from './NumberInput';
 
 export default class ScalePanel {
   constructor(parent, props) {
@@ -20,6 +21,7 @@ export default class ScalePanel {
     this.handleRangeChange = this.handleScalePropertyChange.bind(this, 'range');
     this.handleInterpolatorChange = this.handleScalePropertyChange.bind(this, 'interpolator');
     this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
+    this.handleExponentChange = this.handleScalePropertyChange.bind(this, 'exponent');
     this.toggleView = this.toggleView.bind(this);
 
     this.renderTypeSelector = this.renderTypeSelector.bind(this);
@@ -27,6 +29,7 @@ export default class ScalePanel {
     this.renderRangeInput = this.renderRangeInput.bind(this);
     this.renderInterpolatorInput = this.renderInterpolatorInput.bind(this);
     this.renderClampInput = this.renderClampInput.bind(this);
+    this.renderExponentInput = this.renderExponentInput.bind(this);
 
     // attach listeners
     this.scaleProxy.on('update.scale-panel', () => this.render());
@@ -156,6 +159,16 @@ export default class ScalePanel {
     });
   }
 
+  renderExponentInput(parentNode) {
+    this.exponentInput = renderComponent(this.exponentInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.exponent(),
+      min: 0,
+      max: 20,
+      step: 1,
+      onChange: this.handleExponentChange,
+    });
+  }
+
   /**
    * Render the items that show up in the panel to edit
    * e.g., Type, Domain, Range, Interpolator
@@ -167,6 +180,7 @@ export default class ScalePanel {
     this.renderItem('Interpolator', this.renderInterpolatorInput, 'interpolator',
       'interpolatorInput');
     this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
+    this.renderItem('Exponent', this.renderExponentInput, 'exponent', 'exponentInput');
   }
 
   renderItem(label, renderItem, scaleProp, stateKey) {
