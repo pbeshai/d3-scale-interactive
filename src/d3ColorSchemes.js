@@ -25,3 +25,24 @@ export default function d3ColorSchemes() {
   // filter only those available in case d3-scale-chromatic not there
   return list.filter(name => scaleKeys.includes(name));
 }
+
+
+/**
+ * Takes an color scheme function and returns its string name
+ * @param {Function} scheme e.g. d3.schemeAccent
+ * @return {String} The name e.g. "schemeAccent"
+ */
+export function asString(scheme) {
+  const list = d3ColorSchemes();
+
+  // lazy shallow equals with stringify
+  const schemeString = JSON.stringify(scheme);
+
+  for (let i = 0; i < list.length; i++) {
+    if (JSON.stringify(d3Scale[list[i]]) === schemeString || JSON.stringify(d3ScaleChromatic[list[i]]) === schemeString) {
+      return list[i];
+    }
+  }
+
+  return undefined;
+}

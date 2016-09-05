@@ -43,7 +43,7 @@ export default class InterpolatorInput {
   renderInterpolatorSelector() {
     this.interpolatorSelector = renderComponent(this.interpolatorSelector, InterpolatorSelector,
       this.root.node(), {
-        interpolator: null,
+        interpolator: this.props.interpolator,
         onChange: this.handleInterpolatorChange,
       });
   }

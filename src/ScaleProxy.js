@@ -1,11 +1,11 @@
 import { dispatch } from 'd3-dispatch';
 import { extent } from 'd3-array';
 import * as d3Scale from 'd3-scale';
-import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import supportedScales from './supportedScales';
 import readFromScale from './readFromScale';
-import d3Interpolators from './d3Interpolators';
-import d3ColorSchemes from './d3ColorSchemes';
+import { asString as colorInterpolatorAsString } from './d3ColorInterpolators';
+import { asString as interpolatorAsString } from './d3Interpolators';
+import { asString as colorSchemeAsString } from './d3ColorSchemes';
 
 const Events = {
   // when we change the scale, update is fired
@@ -97,15 +97,28 @@ export default class ScaleProxy {
       .filter(({ key, value }) => newDefault[key]() != value) // eslint-disable-line
       .map(({ key, value }) => ({ key, value: stringifyValue(value) }));
 
-    // match the interpolator name
+    // match the color interpolator name
     if (this.scale.interpolator) {
       const interpolator = this.scale.interpolator();
-      const interpolators = d3Interpolators();
-      for (let i = 0; i < interpolators.length; i++) {
-        const checkInterpolator = d3Scale[interpolators[i]] || d3ScaleChromatic[interpolators[i]];
-        if (interpolator === checkInterpolator) {
-          settings.push({ key: 'interpolator', value: `d3.${interpolators[i]}` });
-          break;
+
+      // if different from default
+      if (newDefault.interpolator() !== interpolator) {
+        const interpolatorString = colorInterpolatorAsString(interpolator);
+        if (interpolatorString) {
+          settings.push({ key: 'interpolator', value: `d3.${interpolatorString}` });
+        }
+      }
+    }
+
+    // match the interpolator name for .interpolate
+    if (this.scale.interpolate) {
+      const interpolate = this.scale.interpolate();
+
+      // if different from default
+      if (newDefault.interpolate() !== interpolate) {
+        const interpolatorString = interpolatorAsString(interpolate);
+        if (interpolatorString) {
+          settings.push({ key: 'interpolate', value: `d3.${interpolatorString}` });
         }
       }
     }
@@ -113,18 +126,10 @@ export default class ScaleProxy {
     // match a color scheme
     if (this.scale.range) {
       const range = JSON.stringify(this.scale.range());
-      const schemes = d3ColorSchemes();
-
-      let rangeSetting;
-      for (let i = 0; i < schemes.length; i++) {
-        const checkRange = JSON.stringify(d3Scale[schemes[i]] || d3ScaleChromatic[schemes[i]]);
-        if (range === checkRange) {
-          rangeSetting = { key: 'range', value: `d3.${schemes[i]}` };
-          break;
-        }
-      }
-
-      if (!rangeSetting) {
+      let rangeSetting = colorSchemeAsString(range);
+      if (rangeSetting) {
+        settings.push({ key: 'range', value: `d3.${rangeSetting}` });
+      } else {
         rangeSetting = { key: 'range', value: stringifyValue(this.scale.range()) };
       }
 
