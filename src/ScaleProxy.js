@@ -74,12 +74,21 @@ export default class ScaleProxy {
 
     const newDefault = d3Scale[this.scaleType]();
 
+    // helper to get prettier stringified values
+    function stringifyValue(value) {
+      if (Array.isArray(value)) {
+        // get spaces after commas in arrays
+        return `[${value.map(v => JSON.stringify(v)).join(', ')}]`;
+      }
+      return JSON.stringify(value);
+    }
+
     let settings = Object.keys(this.scale)
       .filter(key => !ignoreKeys.includes(key))
       .map(key => ({ key, value: this.scale[key]() }))
       // filter out values that are the default
       .filter(({ key, value }) => newDefault[key]() != value) // eslint-disable-line
-      .map(({ key, value }) => ({ key, value: JSON.stringify(value) }));
+      .map(({ key, value }) => ({ key, value: stringifyValue(value) }));
 
     // match the interpolator name
     if (this.scale.interpolator) {
@@ -109,7 +118,7 @@ export default class ScaleProxy {
       }
 
       if (!rangeSetting) {
-        rangeSetting = { key: 'range', value: range };
+        rangeSetting = { key: 'range', value: stringifyValue(this.scale.range()) };
       }
 
       // insert setting at 2nd spot, since first is typically domain in Object.keys(scale)
