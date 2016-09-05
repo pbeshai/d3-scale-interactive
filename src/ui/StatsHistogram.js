@@ -4,7 +4,7 @@ import { scaleLinear } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { className } from './utils';
 
-export default class StatsChart {
+export default class StatsHistogram {
   constructor(parent, props) {
     this.parent = parent;
     this.update(props);

@@ -24,6 +24,7 @@ const defaultScales = {
 
 // list of continuous scales
 const continuousScales = ['scaleLinear', 'scalePow', 'scaleLog', 'scaleTime', 'scaleUtc', 'scaleIdentity'];
+const ordinalScales = ['scaleOrdinal', 'scalePoint', 'scaleBand'];
 
 /**
  * Class for proxying a d3 scale so it can change type and keep stats
@@ -58,6 +59,10 @@ export default class ScaleProxy {
 
   isContinuous() {
     return continuousScales.includes(this.scaleType);
+  }
+
+  isOrdinal() {
+    return ordinalScales.includes(this.scaleType);
   }
 
   /**

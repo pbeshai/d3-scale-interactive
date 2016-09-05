@@ -318,11 +318,13 @@ export default class ScalePanel {
 
   renderStats() {
     this.statsContainer.style('display', this.statsVisible ? '' : 'none');
-    this.statsPanel = renderComponent(this.statsPanel, StatsPanel, this.statsContainer.node(), {
-      scaleProxy: this.scaleProxy,
-    });
-
     this.statsButton.classed(className('active'), this.statsVisible);
+
+    if (this.statsVisible) {
+      this.statsPanel = renderComponent(this.statsPanel, StatsPanel, this.statsContainer.node(), {
+        scaleProxy: this.scaleProxy,
+      });
+    }
   }
 
   render() {
@@ -335,7 +337,9 @@ export default class ScalePanel {
       .classed(className('hidden'), !this.visible);
 
     this.header.text(this.scaleProxy.name);
-    this.renderItems();
-    this.renderStats();
+    if (this.visible) {
+      this.renderItems();
+      this.renderStats();
+    }
   }
 }
