@@ -217,5 +217,6 @@ export default class ArrayInput {
 
     // remove any excess entries
     this.entries.filter((entry, i) => i >= values.length).forEach(entry => entry.remove());
+    this.entries = this.entries.slice(0, values.length);
   }
 }
