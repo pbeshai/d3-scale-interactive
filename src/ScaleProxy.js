@@ -22,6 +22,9 @@ const defaultScales = {
   scalePow: d3Scale.scalePow().exponent(10),
 };
 
+// list of continuous scales
+const continuousScales = ['scaleLinear', 'scalePow', 'scaleLog', 'scaleTime', 'scaleUtc', 'scaleIdentity'];
+
 /**
  * Class for proxying a d3 scale so it can change type and keep stats
  * without changing its reference or interface.
@@ -51,6 +54,10 @@ export default class ScaleProxy {
 
   update() {
     this.dispatch.call(Events.update, this);
+  }
+
+  isContinuous() {
+    return continuousScales.includes(this.scaleType);
   }
 
   /**

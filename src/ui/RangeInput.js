@@ -83,9 +83,19 @@ export default class RangeInput {
   }
 
   renderColorBar() {
+    const { continuous, domain, range, scale } = this.props;
+
     if (this.isColorRange()) {
+      let colors = range;
+      // if a continuous scale, interpolate the color bar
+      if (continuous) {
+        const domainMin = domain[0];
+        const domainMax = domain[domain.length - 1];
+        colors = d3Range(domainMin, domainMax, (domainMax - domainMin) / 100).map(d => scale(d));
+      }
+
       this.colorBar = renderComponent(this.colorBar, ColorBar, this.inner.node(), {
-        colors: this.props.range,
+        colors,
       });
     } else if (this.colorBar) {
       this.colorBar.root.remove();
