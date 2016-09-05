@@ -23,6 +23,10 @@ export default class ScalePanel {
     this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
     this.handleExponentChange = this.handleScalePropertyChange.bind(this, 'exponent');
     this.handleBaseChange = this.handleScalePropertyChange.bind(this, 'base');
+    this.handlePaddingChange = this.handleScalePropertyChange.bind(this, 'padding');
+    this.handlePaddingInnerChange = this.handleScalePropertyChange.bind(this, 'paddingInner');
+    this.handlePaddingOuterChange = this.handleScalePropertyChange.bind(this, 'paddingOuter');
+    this.handleAlignChange = this.handleScalePropertyChange.bind(this, 'align');
 
     this.toggleView = this.toggleView.bind(this);
 
@@ -33,6 +37,10 @@ export default class ScalePanel {
     this.renderClampInput = this.renderClampInput.bind(this);
     this.renderExponentInput = this.renderExponentInput.bind(this);
     this.renderBaseInput = this.renderBaseInput.bind(this);
+    this.renderPaddingInput = this.renderPaddingInput.bind(this);
+    this.renderPaddingInnerInput = this.renderPaddingInnerInput.bind(this);
+    this.renderPaddingOuterInput = this.renderPaddingOuterInput.bind(this);
+    this.renderAlignInput = this.renderAlignInput.bind(this);
 
     // attach listeners
     this.scaleProxy.on('update.scale-panel', () => this.render());
@@ -182,6 +190,46 @@ export default class ScalePanel {
     });
   }
 
+  renderPaddingInput(parentNode) {
+    this.paddingInput = renderComponent(this.paddingInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.padding(),
+      min: 0,
+      max: 1,
+      step: 0.05,
+      onChange: this.handlePaddingChange,
+    });
+  }
+
+  renderPaddingInnerInput(parentNode) {
+    this.paddingInnerInput = renderComponent(this.paddingInnerInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.paddingInner(),
+      min: 0,
+      max: 1,
+      step: 0.05,
+      onChange: this.handlePaddingInnerChange,
+    });
+  }
+
+  renderPaddingOuterInput(parentNode) {
+    this.paddingOuterInput = renderComponent(this.paddingOuterInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.paddingOuter(),
+      min: 0,
+      max: 1,
+      step: 0.05,
+      onChange: this.handlePaddingOuterChange,
+    });
+  }
+
+  renderAlignInput(parentNode) {
+    this.alignInput = renderComponent(this.alignInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.align(),
+      min: 0,
+      max: 1,
+      step: 0.05,
+      onChange: this.handleAlignChange,
+    });
+  }
+
   /**
    * Render the items that show up in the panel to edit
    * e.g., Type, Domain, Range, Interpolator
@@ -195,6 +243,10 @@ export default class ScalePanel {
     this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
     this.renderItem('Exponent', this.renderExponentInput, 'exponent', 'exponentInput');
     this.renderItem('Base', this.renderBaseInput, 'base', 'baseInput');
+    this.renderItem('Padding', this.renderPaddingInput, 'padding', 'paddingInput');
+    this.renderItem('Padding Inner', this.renderPaddingInnerInput, 'paddingInner', 'paddingInnerInput');
+    this.renderItem('Padding Outer', this.renderPaddingOuterInput, 'paddingOuter', 'paddingOuterInput');
+    this.renderItem('Align', this.renderAlignInput, 'align', 'alignInput');
   }
 
   renderItem(label, renderItem, scaleProp, stateKey) {

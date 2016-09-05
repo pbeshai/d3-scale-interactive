@@ -1,4 +1,4 @@
-import { select } from 'd3-selection';
+import { select, event } from 'd3-selection';
 import { className } from './utils';
 
 export default class NumberInput {
