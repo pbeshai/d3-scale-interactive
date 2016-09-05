@@ -1,6 +1,6 @@
 import { select } from 'd3-selection';
 import { extent, max, histogram } from 'd3-array';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleTime, scaleUtc } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { className } from './utils';
 
@@ -47,7 +47,7 @@ export default class StatsHistogram {
     if (!this.root) {
       this.setup();
     }
-    const { data } = this.props;
+    const { data, timeScale } = this.props;
 
     if (!data.length) {
       this.countRects.selectAll('*').remove();
@@ -56,7 +56,15 @@ export default class StatsHistogram {
     const innerHeight = this.innerHeight;
     const innerWidth = this.innerWidth;
 
-    const xScale = scaleLinear().range([0, innerWidth]);
+    let xScale;
+    if (timeScale === 'scaleTime') {
+      xScale = scaleTime().range([0, innerWidth]);
+    } else if (timeScale === 'scaleUtc') {
+      xScale = scaleUtc().range([0, innerWidth]);
+    } else {
+      xScale = scaleLinear().range([0, innerWidth]);
+    }
+
     const yScale = scaleLinear().range([innerHeight, 0]);
 
     const xExtent = extent(data);

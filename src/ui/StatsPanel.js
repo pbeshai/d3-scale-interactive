@@ -60,6 +60,7 @@ export default class StatsPanel {
     if (scaleProxy.isContinuous() || scaleProxy.scaleType === 'scaleSequential') {
       this.domainChart = renderComponent(this.domainChart, StatsHistogram, this.domainChartContainer.node(), {
         data: scaleProxy.stats.domainHistogram,
+        timeScale: scaleProxy.isTimeScale() && scaleProxy.scaleType,
       });
       this.domainStatus.text('');
 
