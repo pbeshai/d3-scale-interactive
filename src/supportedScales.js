@@ -6,6 +6,8 @@ export default [
   'scaleLinear',
   'scaleLog',
   'scalePow',
+  'scaleTime',
+  'scaleUtc',
   'scaleQuantize',
   'scaleQuantile',
   'scaleThreshold',

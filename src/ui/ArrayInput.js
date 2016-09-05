@@ -55,7 +55,11 @@ export default class ArrayInput {
 
     // try to convert it to a number
     let newValue = target.value;
-    if (!isNaN(parseFloat(newValue))) {
+    const oldValue = values[index];
+    if (oldValue instanceof Date) {
+      const [year, month, day] = newValue.split('-');
+      newValue = new Date(year, month - 1, day);
+    } else if (!isNaN(parseFloat(newValue))) {
       newValue = parseFloat(newValue);
     }
 
@@ -153,13 +157,16 @@ export default class ArrayInput {
 
       root.append('input')
         .attr('class', className('input-entry-field'))
-        .attr('type', 'text')
+        .attr('type', 'date')
         .on('change', function inputChange() {
           that.inputChange(this);
         })
         .on('mousedown', function mousedown() {
           const target = this;
-          if (isColor(this.value)) {
+          const index = parseInt(target.parentNode.getAttribute('data-index'), 10);
+
+          // if not a number, disable dragging
+          if (typeof that.props.values[index] !== 'number') {
             return;
           }
 
@@ -197,20 +204,36 @@ export default class ArrayInput {
         });
     }
 
-    root.select('input').property('value', entry);
     root.select(`.${className('input-entry-remove')}`).classed(className('hidden'), !removable);
     root.attr('data-index', index);
+    root.select(`.${className('input-entry-color')}`)
+        .classed(className('hidden'), true);
+
+    // handle if date
+    if (entry instanceof Date) {
+      const year = entry.getFullYear();
+      const month = `0${entry.getMonth() + 1}`.slice(-2);
+      const day = `0${entry.getDate()}`.slice(-2);
+      root.select('input')
+        .attr('type', 'date')
+        .classed(className('draggable'), false)
+        .property('value', `${year}-${month}-${day}`);
 
     // handle if color
-    if (isColor(entry)) {
-      root.select('input').classed(className('draggable'), false);
+    } else if (isColor(entry)) {
+      root.select('input')
+        .attr('type', 'text')
+        .classed(className('draggable'), false)
+        .property('value', entry);
+
       root.select(`.${className('input-entry-color')}`)
         .property('value', colorString(entry))
         .classed(className('hidden'), false);
     } else {
-      root.select('input').classed(className('draggable'), true);
-      root.select(`.${className('input-entry-color')}`)
-        .classed(className('hidden'), true);
+      root.select('input')
+        .attr('type', 'text')
+        .classed(className('draggable'), true)
+        .property('value', entry);
     }
   }
 

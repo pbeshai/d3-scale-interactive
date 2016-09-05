@@ -6,8 +6,12 @@ function generateRandom(length) {
   var vRandomizer = d3.randomNormal(150, 50);
   var catRandomizer = d3.randomNormal(2.5, 1);
   return d3.range(length).map(() => ({
+    // data for linear:
     x: Math.round(xRandomizer()),
+    // data for categorical:
     // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))]
+    // data for time:
+    // x: new Date(2016, Math.floor(Math.random() * 12), Math.ceil(Math.random() * 30)),
     y: Math.round(yRandomizer()),
     v: Math.round(vRandomizer()),
   }));
@@ -29,7 +33,15 @@ function setupChart(data) {
       .domain(d3.extent(data, d => d.x))
       .range([0, width]);
 
-  // switch to this for categorical
+  // switch to this for time
+  // x = d3.scaleInteractive('x', updateChart)
+  // // x = d3
+      // .scaleTime()
+      // .domain(d3.extent(data, d => d.x))
+      // .range([0, width]);
+
+
+  // switch to this for categorical and comment out x.domain(d3.extent ...) below
   // x = d3.scaleInteractive('cat', updateChart)
   // // x = d3
       // .scalePoint()
