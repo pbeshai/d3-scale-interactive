@@ -25,11 +25,17 @@ export default class StatsPanel {
     this.domainRoot.append('h4')
       .text('Domain Counts');
 
+    this.domainStatus = this.domainRoot.append('span')
+      .attr('class', className('stats-status'));
+
     this.rangeRoot = this.root.append('div')
       .attr('class', className('stats-range'));
 
     this.rangeRoot.append('h4')
       .text('Range Counts');
+
+    this.rangeStatus = this.rangeRoot.append('span')
+      .attr('class', className('stats-status'));
   }
 
   render() {
@@ -39,12 +45,32 @@ export default class StatsPanel {
 
     const { scaleProxy } = this.props;
 
-    this.domainChart = renderComponent(this.domainChart, StatsChart, this.domainRoot.node(), {
-      data: scaleProxy.stats.domainHistogram,
-    });
+    // draw the domain chart if continuous or sequential
+    if (scaleProxy.isContinuous() || scaleProxy.scaleType === 'scaleSequential') {
+      this.domainChart = renderComponent(this.domainChart, StatsChart, this.domainRoot.node(), {
+        data: scaleProxy.stats.domainHistogram,
+      });
+      this.domainStatus.text('');
+    } else {
+      if (this.domainChart) {
+        this.domainChart.remove();
+        this.domainChart = null;
+      }
+      this.domainStatus.text('Not available');
+    }
 
-    this.rangeChart = renderComponent(this.rangeChart, StatsChart, this.rangeRoot.node(), {
-      data: scaleProxy.stats.rangeHistogram,
-    });
+    // draw range chart if continuous
+    if (scaleProxy.isContinuous() && typeof scaleProxy.proxyScale.range()[0] === 'number') {
+      this.rangeChart = renderComponent(this.rangeChart, StatsChart, this.rangeRoot.node(), {
+        data: scaleProxy.stats.rangeHistogram,
+      });
+      this.rangeStatus.text('');
+    } else {
+      if (this.rangeChart) {
+        this.rangeChart.remove();
+        this.rangeChart = null;
+      }
+      this.rangeStatus.text('Not available');
+    }
   }
 }

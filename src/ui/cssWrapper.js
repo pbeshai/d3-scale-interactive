@@ -181,6 +181,9 @@ export default `
   height: 15px;
   border-radius: 0;
 }
+.d3-scale-interactive-stats-panel {
+  margin-bottom: 8px;
+}
 
 .d3-scale-interactive-stats-chart .axis path,
 .d3-scale-interactive-stats-chart .axis line {
@@ -188,5 +191,11 @@ export default `
 }
 .d3-scale-interactive-stats-chart .axis text {
   fill: #777;
+}
+
+.d3-scale-interactive-stats-status {
+  font-style: italic;
+  color: #777;
+  font-size: 11px;
 }
 `;

@@ -53,8 +53,11 @@ export default class StatsChart {
       this.countRects.selectAll('*').remove();
       return;
     }
-    const xScale = scaleLinear().range([0, this.innerWidth]);
-    const yScale = scaleLinear().range([this.innerHeight, 0]);
+    const innerHeight = this.innerHeight;
+    const innerWidth = this.innerWidth;
+
+    const xScale = scaleLinear().range([0, innerWidth]);
+    const yScale = scaleLinear().range([innerHeight, 0]);
 
     const xExtent = extent(data);
     xScale.domain(xExtent);
@@ -77,10 +80,15 @@ export default class StatsChart {
       .append('rect')
       .attr('x', 1)
       .attr('width', barWidth)
-      .attr('height', d => yScale(0) - yScale(d.length))
       .style('fill', '#0bb');
 
     bars = bars.merge(barsEnter)
-      .attr('transform', d => `translate(${xScale(d.x0)}, ${yScale(d.length)})`);
+      .attr('transform', d => `translate(${xScale(d.x0)}, ${yScale(d.length)})`)
+      .each(function eachBar(d) {
+        select(this).select('rect')
+          .attr('x', 1)
+          .attr('width', barWidth)
+          .attr('height', innerHeight - yScale(d.length));
+      });
   }
 }
