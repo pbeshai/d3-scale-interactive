@@ -22,6 +22,8 @@ export default class ScalePanel {
     this.handleInterpolatorChange = this.handleScalePropertyChange.bind(this, 'interpolator');
     this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
     this.handleExponentChange = this.handleScalePropertyChange.bind(this, 'exponent');
+    this.handleBaseChange = this.handleScalePropertyChange.bind(this, 'base');
+
     this.toggleView = this.toggleView.bind(this);
 
     this.renderTypeSelector = this.renderTypeSelector.bind(this);
@@ -30,6 +32,7 @@ export default class ScalePanel {
     this.renderInterpolatorInput = this.renderInterpolatorInput.bind(this);
     this.renderClampInput = this.renderClampInput.bind(this);
     this.renderExponentInput = this.renderExponentInput.bind(this);
+    this.renderBaseInput = this.renderBaseInput.bind(this);
 
     // attach listeners
     this.scaleProxy.on('update.scale-panel', () => this.render());
@@ -169,6 +172,16 @@ export default class ScalePanel {
     });
   }
 
+  renderBaseInput(parentNode) {
+    this.baseInput = renderComponent(this.baseInput, NumberInput, parentNode, {
+      value: this.scaleProxy.proxyScale.base(),
+      min: 1,
+      max: 20,
+      step: 1,
+      onChange: this.handleBaseChange,
+    });
+  }
+
   /**
    * Render the items that show up in the panel to edit
    * e.g., Type, Domain, Range, Interpolator
@@ -181,6 +194,7 @@ export default class ScalePanel {
       'interpolatorInput');
     this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
     this.renderItem('Exponent', this.renderExponentInput, 'exponent', 'exponentInput');
+    this.renderItem('Base', this.renderBaseInput, 'base', 'baseInput');
   }
 
   renderItem(label, renderItem, scaleProp, stateKey) {
