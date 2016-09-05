@@ -164,7 +164,7 @@ export default class ScalePanel {
       range: this.scaleProxy.proxyScale.range(),
       onChange: this.handleRangeChange,
       domain: this.scaleProxy.proxyScale.domain(),
-      scale: this.scaleProxy.proxyScale,
+      scale: this.scaleProxy.scale,
       continuous: this.scaleProxy.isContinuous(),
     });
   }

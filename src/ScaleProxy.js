@@ -336,16 +336,17 @@ export default class ScaleProxy {
     const now = Date.now();
     const debounceThreshold = 100;
     // enough time has passed, call proxy set
-    if (this.lastProxySet && now - this.lastProxySet > debounceThreshold) {
-      // proxy set
-      this.dispatch.call(Events.proxySet, this);
+    if (this.lastProxySetAttempt && now - this.lastProxySetAttempt > debounceThreshold) {
       clearTimeout(this.proxySetTimeout);
       this.proxySetTimeout = null;
-      this.lastProxySet = null;
+      this.lastProxySetAttempt = null;
+
+      // proxy set
+      this.dispatch.call(Events.proxySet, this);
 
     // not enough time has passed - reset the timer
     } else {
-      this.lastProxySet = now;
+      this.lastProxySetAttempt = now;
       clearTimeout(this.proxySetTimeout);
       this.proxySetTimeout = setTimeout(() => this.debouncedProxySet(), debounceThreshold);
     }
