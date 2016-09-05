@@ -99,11 +99,13 @@ export default class ScalePanel {
       .text('Debug')
       .attr('title', 'Add scale to window to debug in console')
       .on('click', () => {
+        /* eslint-disable no-underscore-dangle */
         window._scales = window._scales || {};
         const name = this.scaleProxy.name;
         window._scales[name] = this.scaleProxy.proxyScale;
         window._scales[`${name}Raw`] = this.scaleProxy.scale;
         window._scales[`${name}ScaleProxy`] = this.scaleProxy;
+        /* eslint-enable no-underscore-dangle */
 
         console.log(`Added scale ${name} to window._scales['${name}']...`, this.scaleProxy.proxyScale);
       });
