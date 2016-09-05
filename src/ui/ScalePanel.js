@@ -102,7 +102,7 @@ export default class ScalePanel {
 
     this.controls.append('button')
       .text('Stats')
-      .on('click', () => console.log('TODO stats'));
+      .on('click', () => console.log(`Stats for ${this.scaleProxy.name}\n`, this.scaleProxy.stats));
 
     this.controls.append('button')
       .attr('class', className('reset-button'))
