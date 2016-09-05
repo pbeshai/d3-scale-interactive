@@ -72,6 +72,7 @@ export default class ScalePanel {
 
   handleDomainNice() {
     this.scaleProxy.proxyScale.nice();
+    this.scaleProxy.update();
   }
 
   handleTypeChange(newType) {
