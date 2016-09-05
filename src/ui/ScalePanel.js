@@ -4,6 +4,7 @@ import TypeSelector from './TypeSelector';
 import DomainInput from './DomainInput';
 import RangeInput from './RangeInput';
 import InterpolatorInput from './InterpolatorInput';
+import InterpolateSelector from './InterpolateSelector';
 import BooleanInput from './BooleanInput';
 import NumberInput from './NumberInput';
 
@@ -23,6 +24,7 @@ export default class ScalePanel {
     this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
     this.handleExponentChange = this.handleScalePropertyChange.bind(this, 'exponent');
     this.handleBaseChange = this.handleScalePropertyChange.bind(this, 'base');
+    this.handleInterpolateChange = this.handleScalePropertyChange.bind(this, 'interpolate');
     this.handleRoundChange = this.handleScalePropertyChange.bind(this, 'round');
     this.handlePaddingChange = this.handleScalePropertyChange.bind(this, 'padding');
     this.handlePaddingInnerChange = this.handleScalePropertyChange.bind(this, 'paddingInner');
@@ -38,6 +40,7 @@ export default class ScalePanel {
     this.renderClampInput = this.renderClampInput.bind(this);
     this.renderExponentInput = this.renderExponentInput.bind(this);
     this.renderBaseInput = this.renderBaseInput.bind(this);
+    this.renderInterpolateInput = this.renderInterpolateInput.bind(this);
     this.renderRoundInput = this.renderRoundInput.bind(this);
     this.renderPaddingInput = this.renderPaddingInput.bind(this);
     this.renderPaddingInnerInput = this.renderPaddingInnerInput.bind(this);
@@ -192,6 +195,12 @@ export default class ScalePanel {
     });
   }
 
+  renderInterpolateInput(parentNode) {
+    this.interpolateInput = renderComponent(this.interpolateInput, InterpolateSelector, parentNode, {
+      value: this.scaleProxy.proxyScale.interpolate(),
+      onChange: this.handleInterpolateChange,
+    });
+  }
 
   renderRoundInput(parentNode) {
     this.roundInput = renderComponent(this.roundInput, BooleanInput, parentNode, {
@@ -253,6 +262,8 @@ export default class ScalePanel {
     this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
     this.renderItem('Exponent', this.renderExponentInput, 'exponent', 'exponentInput');
     this.renderItem('Base', this.renderBaseInput, 'base', 'baseInput');
+    this.renderItem('Interpolate', this.renderInterpolateInput, 'interpolate', 'interpolateInput');
+
     this.renderItem('Round', this.renderRoundInput, 'round', 'roundInput');
     this.renderItem('Padding Inner', this.renderPaddingInnerInput, 'paddingInner', 'paddingInnerInput');
     this.renderItem('Padding Outer', this.renderPaddingOuterInput, 'paddingOuter', 'paddingOuterInput');

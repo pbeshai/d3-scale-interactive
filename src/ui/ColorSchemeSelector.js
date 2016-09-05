@@ -1,6 +1,6 @@
 import { select } from 'd3-selection';
 import { className } from './utils';
-import d3ColorSchemes from '../d3ColorSchemes';
+import d3ColorSchemes, { asString } from '../d3ColorSchemes';
 
 export default class ColorSchemeSelector {
   constructor(parent, props) {
@@ -45,6 +45,6 @@ export default class ColorSchemeSelector {
       this.setup();
     }
 
-    this.select.property('value', this.props.scheme);
+    this.select.property('value', asString(this.props.scheme));
   }
 }

@@ -107,7 +107,7 @@ export default class RangeInput {
     if (this.isColorRange()) {
       this.colorSchemeSelector = renderComponent(this.colorSchemeSelector, ColorSchemeSelector,
         this.inner.node(), {
-          scheme: null,
+          scheme: this.props.range,
           onChange: this.handleColorSchemeChange,
         });
     } else if (this.colorSchemeSelector) {
