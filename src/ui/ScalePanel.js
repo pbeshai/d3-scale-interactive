@@ -7,12 +7,14 @@ import InterpolatorInput from './InterpolatorInput';
 import InterpolateSelector from './InterpolateSelector';
 import BooleanInput from './BooleanInput';
 import NumberInput from './NumberInput';
+import StatsPanel from './StatsPanel';
 
 export default class ScalePanel {
   constructor(parent, props) {
     this.parent = parent;
     this.scaleProxy = props.scaleProxy;
     this.visible = true;
+    this.statsVisible = false;
 
     // bind handlers
     this.handleTypeChange = this.handleTypeChange.bind(this);
@@ -32,6 +34,7 @@ export default class ScalePanel {
     this.handleAlignChange = this.handleScalePropertyChange.bind(this, 'align');
 
     this.toggleView = this.toggleView.bind(this);
+    this.toggleStats = this.toggleStats.bind(this);
 
     this.renderTypeSelector = this.renderTypeSelector.bind(this);
     this.renderDomainInput = this.renderDomainInput.bind(this);
@@ -78,6 +81,8 @@ export default class ScalePanel {
     this.controls = this.inner.append('div')
       .attr('class', className('scale-controls'));
 
+    this.statsContainer = this.inner.append('div');
+
     this.itemsContainer = this.inner.append('div')
       .attr('class', className('panel-items'));
 
@@ -103,9 +108,9 @@ export default class ScalePanel {
         console.log(`Added scale ${name} to window._scales['${name}']...`, this.scaleProxy.proxyScale);
       });
 
-    this.controls.append('button')
+    this.statsButton = this.controls.append('button')
       .text('Stats')
-      .on('click', () => console.log(`Stats for ${this.scaleProxy.name}\n`, this.scaleProxy.stats));
+      .on('click', this.toggleStats);
 
     this.controls.append('button')
       .attr('class', className('reset-button'))
@@ -114,6 +119,15 @@ export default class ScalePanel {
 
 
     this.items = {};
+  }
+
+  toggleStats() {
+    this.statsVisible = !this.statsVisible;
+    if (this.statsVisible) {
+      console.log(`Stats for scale ${this.scaleProxy.name}\n`, this.scaleProxy.stats);
+    }
+
+    this.render();
   }
 
   toggleView() {
@@ -302,6 +316,15 @@ export default class ScalePanel {
     renderItem(inner.node());
   }
 
+  renderStats() {
+    this.statsContainer.style('display', this.statsVisible ? '' : 'none');
+    this.statsPanel = renderComponent(this.statsPanel, StatsPanel, this.statsContainer.node(), {
+      scaleProxy: this.scaleProxy,
+    });
+
+    this.statsButton.classed(className('active'), this.statsVisible);
+  }
+
   render() {
     if (!this.root) {
       this.setup();
@@ -313,5 +336,6 @@ export default class ScalePanel {
 
     this.header.text(this.scaleProxy.name);
     this.renderItems();
+    this.renderStats();
   }
 }

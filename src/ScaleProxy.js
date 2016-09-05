@@ -291,7 +291,7 @@ export default class ScaleProxy {
    * @return {void}
    */
   statsReset() {
-    this.stats = { domainCounts: {}, rangeCounts: {} };
+    this.stats = { domainCounts: {}, domainHistogram: [], rangeCounts: {}, rangeHistogram: [] };
   }
 
   /**
@@ -302,7 +302,7 @@ export default class ScaleProxy {
    * @return {void}
    */
   statsRecordValueUsed(domainValue, rangeValue) {
-    const { domainCounts, rangeCounts } = this.stats;
+    const { domainCounts, rangeCounts, domainHistogram, rangeHistogram } = this.stats;
 
     if (!domainCounts[domainValue]) {
       domainCounts[domainValue] = 1;
@@ -315,6 +315,9 @@ export default class ScaleProxy {
     } else {
       rangeCounts[rangeValue] += 1;
     }
+
+    domainHistogram.push(domainValue);
+    rangeHistogram.push(rangeValue);
   }
 }
 
