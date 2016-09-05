@@ -49,8 +49,8 @@ export default class StatsHistogram {
     }
     const { data, timeScale } = this.props;
 
+    // keep old data rendered when data resets
     if (!data.length) {
-      this.countRects.selectAll('*').remove();
       return;
     }
     const innerHeight = this.innerHeight;
@@ -83,7 +83,7 @@ export default class StatsHistogram {
     const barsEnter = bars.enter().append('g').attr('class', 'bar');
 
     const sampleBin = bins[1] || bins[0]; // first one can be smaller so use second if available
-    const barWidth = xScale(sampleBin.x1) - xScale(sampleBin.x0) - 1;
+    const barWidth = Math.max(1, xScale(sampleBin.x1) - xScale(sampleBin.x0) - 1);
     barsEnter
       .append('rect')
       .attr('x', 1)
@@ -96,7 +96,8 @@ export default class StatsHistogram {
         select(this).select('rect')
           .attr('x', 1)
           .attr('width', barWidth)
-          .attr('height', innerHeight - yScale(d.length));
+          .attr('height', innerHeight - yScale(d.length))
+          .style('fill', '#0bb');
       });
   }
 }

@@ -328,6 +328,27 @@ export default class ScaleProxy {
 
     domainHistogram.push(domainValue);
     rangeHistogram.push(rangeValue);
+
+    this.debouncedProxySet();
+  }
+
+  debouncedProxySet() {
+    const now = Date.now();
+    const debounceThreshold = 100;
+    // enough time has passed, call proxy set
+    if (this.lastProxySet && now - this.lastProxySet > debounceThreshold) {
+      // proxy set
+      this.dispatch.call(Events.proxySet, this);
+      clearTimeout(this.proxySetTimeout);
+      this.proxySetTimeout = null;
+      this.lastProxySet = null;
+
+    // not enough time has passed - reset the timer
+    } else {
+      this.lastProxySet = now;
+      clearTimeout(this.proxySetTimeout);
+      this.proxySetTimeout = setTimeout(() => this.debouncedProxySet(), debounceThreshold);
+    }
   }
 }
 

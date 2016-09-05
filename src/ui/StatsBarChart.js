@@ -57,8 +57,8 @@ export default class StatsBarChart {
     }
     const { data, noXTicks } = this.props;
 
+    // keep old data rendered when data resets
     if (!data.length) {
-      this.countRects.selectAll('*').remove();
       return;
     }
 
