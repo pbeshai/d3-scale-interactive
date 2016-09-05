@@ -1,5 +1,6 @@
 import { select, event } from 'd3-selection';
 import { color } from 'd3-color';
+import { interpolate } from 'd3-interpolate';
 import { className } from './utils';
 
 /**
@@ -70,7 +71,17 @@ export default class ArrayInput {
 
     const { values, onChange } = this.props;
     const oldValues = values;
-    const newValues = [...oldValues.slice(0, index + 1), oldValues[index], ...oldValues.slice(index + 1)];
+
+    // attempt interpolation between the this and the next otherwise use this value
+    const curr = oldValues[index];
+    const next = oldValues[index + 1] == null ? curr : oldValues[index + 1];
+
+    let newValue = interpolate(curr, next)(0.5);
+    if (isColor(newValue)) {
+      newValue = colorString(newValue);
+    }
+
+    const newValues = [...oldValues.slice(0, index + 1), newValue, ...oldValues.slice(index + 1)];
     onChange(newValues);
   }
 
