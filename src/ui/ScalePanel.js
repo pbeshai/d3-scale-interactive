@@ -23,6 +23,7 @@ export default class ScalePanel {
     this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
     this.handleExponentChange = this.handleScalePropertyChange.bind(this, 'exponent');
     this.handleBaseChange = this.handleScalePropertyChange.bind(this, 'base');
+    this.handleRoundChange = this.handleScalePropertyChange.bind(this, 'round');
     this.handlePaddingChange = this.handleScalePropertyChange.bind(this, 'padding');
     this.handlePaddingInnerChange = this.handleScalePropertyChange.bind(this, 'paddingInner');
     this.handlePaddingOuterChange = this.handleScalePropertyChange.bind(this, 'paddingOuter');
@@ -37,6 +38,7 @@ export default class ScalePanel {
     this.renderClampInput = this.renderClampInput.bind(this);
     this.renderExponentInput = this.renderExponentInput.bind(this);
     this.renderBaseInput = this.renderBaseInput.bind(this);
+    this.renderRoundInput = this.renderRoundInput.bind(this);
     this.renderPaddingInput = this.renderPaddingInput.bind(this);
     this.renderPaddingInnerInput = this.renderPaddingInnerInput.bind(this);
     this.renderPaddingOuterInput = this.renderPaddingOuterInput.bind(this);
@@ -190,6 +192,14 @@ export default class ScalePanel {
     });
   }
 
+
+  renderRoundInput(parentNode) {
+    this.roundInput = renderComponent(this.roundInput, BooleanInput, parentNode, {
+      value: this.scaleProxy.proxyScale.round(),
+      onChange: this.handleRoundChange,
+    });
+  }
+
   renderPaddingInput(parentNode) {
     this.paddingInput = renderComponent(this.paddingInput, NumberInput, parentNode, {
       value: this.scaleProxy.proxyScale.padding(),
@@ -243,9 +253,10 @@ export default class ScalePanel {
     this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
     this.renderItem('Exponent', this.renderExponentInput, 'exponent', 'exponentInput');
     this.renderItem('Base', this.renderBaseInput, 'base', 'baseInput');
-    this.renderItem('Padding', this.renderPaddingInput, 'padding', 'paddingInput');
+    this.renderItem('Round', this.renderRoundInput, 'round', 'roundInput');
     this.renderItem('Padding Inner', this.renderPaddingInnerInput, 'paddingInner', 'paddingInnerInput');
     this.renderItem('Padding Outer', this.renderPaddingOuterInput, 'paddingOuter', 'paddingOuterInput');
+    this.renderItem('Padding', this.renderPaddingInput, 'padding', 'paddingInput');
     this.renderItem('Align', this.renderAlignInput, 'align', 'alignInput');
   }
 
