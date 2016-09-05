@@ -34,8 +34,12 @@ export default class NumberInput {
     // if it is an integer, minimum increment is 1
     let isInteger = false;
     if (this.dragStartValue === Math.round(this.dragStartValue)) {
-      isInteger = true;
-      increment = Math.max(0.25, Math.round(increment));
+      isInteger = (max - min) > 1; // treat as non-integer if range is less than 1
+      if (isInteger) {
+        increment = Math.max(0.25, Math.round(increment));
+      } else {
+        increment = Math.max(0.01, Math.round(increment));
+      }
     }
 
     let newValue = this.dragStartValue + (increment * -delta);
