@@ -1,26 +1,6 @@
 import { select } from 'd3-selection';
 import { className } from './utils';
-
-function d3ColorSchemes() {
-  const list = [
-    'schemeCategory10',
-    'schemeCategory20',
-    'schemeCategory20b',
-    'schemeCategory20c',
-    'schemeAccent',
-    'schemeDark2',
-    'schemePaired',
-    'schemePastel1',
-    'schemePastel2',
-    'schemeSet1',
-    'schemeSet2',
-    'schemeSet3',
-  ];
-
-  // filter only those available in case d3-scale-chromatic not there
-  return list.filter(name => (window.d3 ? window.d3[name] : true));
-}
-
+import d3ColorSchemes from '../d3ColorSchemes';
 
 export default class ColorSchemeSelector {
   constructor(parent, props) {

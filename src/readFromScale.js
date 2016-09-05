@@ -1,6 +1,7 @@
 const ignoreKeysOnRead = [
   'bandwidth',
   'copy',
+  'invert',
   'nice',
   'quantiles',
   'rangeRound',

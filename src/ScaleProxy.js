@@ -1,8 +1,11 @@
 import { dispatch } from 'd3-dispatch';
 import { extent } from 'd3-array';
 import * as d3Scale from 'd3-scale';
+import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import supportedScales from './supportedScales';
 import readFromScale from './readFromScale';
+import d3Interpolators from './d3Interpolators';
+import d3ColorSchemes from './d3ColorSchemes';
 
 const Events = {
   // when we change the scale, update is fired
@@ -48,6 +51,73 @@ export default class ScaleProxy {
 
   update() {
     this.dispatch.call(Events.update, this);
+  }
+
+  /**
+   * Generate the js code to create this scale from scratch
+   */
+  generateCode() {
+    const ignoreKeys = [
+      'bandwidth',
+      'copy',
+      'interpolate',
+      'interpolator',
+      'invert',
+      'nice',
+      'quantiles',
+      'range',
+      'rangeRound',
+      'step',
+      'ticks',
+      'tickFormat',
+    ];
+
+    const newDefault = d3Scale[this.scaleType]();
+
+    let settings = Object.keys(this.scale)
+      .filter(key => !ignoreKeys.includes(key))
+      .map(key => ({ key, value: this.scale[key]() }))
+      // filter out values that are the default
+      .filter(({ key, value }) => newDefault[key]() != value) // eslint-disable-line
+      .map(({ key, value }) => ({ key, value: JSON.stringify(value) }));
+
+    // match the interpolator name
+    if (this.scale.interpolator) {
+      const interpolator = this.scale.interpolator();
+      const interpolators = d3Interpolators();
+      for (let i = 0; i < interpolators.length; i++) {
+        const checkInterpolator = d3Scale[interpolators[i]] || d3ScaleChromatic[interpolators[i]];
+        if (interpolator === checkInterpolator) {
+          settings.push({ key: 'interpolator', value: `d3.${interpolators[i]}` });
+          break;
+        }
+      }
+    }
+
+    // match a color scheme
+    if (this.scale.range) {
+      const range = JSON.stringify(this.scale.range());
+      const schemes = d3ColorSchemes();
+
+      let rangeSetting;
+      for (let i = 0; i < schemes.length; i++) {
+        const checkRange = JSON.stringify(d3Scale[schemes[i]] || d3ScaleChromatic[schemes[i]]);
+        if (range === checkRange) {
+          rangeSetting = { key: 'range', value: `d3.${schemes[i]}` };
+          break;
+        }
+      }
+
+      if (!rangeSetting) {
+        rangeSetting = { key: 'range', value: range };
+      }
+
+      // insert setting at 2nd spot, since first is typically domain in Object.keys(scale)
+      settings = [settings[0], rangeSetting, ...settings.slice(1)];
+    }
+
+
+    return `d3.${this.scaleType}()${settings.map(({ key, value }) => `\n  .${key}(${value})`).join('')};`;
   }
 
   /**
