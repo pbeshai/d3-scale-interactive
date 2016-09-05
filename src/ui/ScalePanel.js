@@ -46,10 +46,19 @@ export default class ScalePanel {
       .append('div')
         .attr('class', className('panel'));
 
-    this.reset = this.root.append('span')
-      .attr('class', className('reset-button'))
+    this.reset = this.root.append('button')
+      .attr('class', className('header-button'))
       .text('Reset')
       .on('click', () => this.scaleProxy.reset());
+
+    // generate code button
+    this.root.append('button')
+      .attr('class', className('header-button'))
+      .text('Code')
+      .attr('alt', 'Output generated code to console')
+      .on('click', () => {
+        console.log(`const ${this.scaleProxy.name} = ${this.scaleProxy.generateCode()}`);
+      });
 
     this.header = this.root.append('h3')
       .attr('class', className('panel-header'))
