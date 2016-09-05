@@ -46,11 +46,16 @@ export default `
   border-bottom: 1px solid #111;
 }
 
-.d3-scale-interactive-hidden .d3-scale-interactive-panel-inner {
-  display: none;
+.d3-scale-interactive-scale-controls {
+  margin-bottom: 4px;
 }
 
-.d3-scale-interactive-hidden .d3-scale-interactive-header-button {
+
+.d3-scale-interactive-panel-inner {
+  clear: both;
+}
+
+.d3-scale-interactive-hidden .d3-scale-interactive-panel-inner {
   display: none;
 }
 
@@ -139,8 +144,12 @@ export default `
   display: none;
 }
 
-button,
-.d3-scale-interactive-header-button {
+.d3-scale-interactive-main .d3-scale-interactive-reset-button {
+  float: right;
+}
+
+
+.d3-scale-interactive-main button {
   font-size: 10px;
   text-transform: uppercase;
   display: inline-block;
@@ -153,14 +162,8 @@ button,
   margin: 0 4px 4px 0;
 }
 
-.d3-scale-interactive-header-button {
-  float: right;
-  padding: 6px 12px;
-  margin: -4px -4px 0 8px;
-}
 
-button:hover,
-.d3-scale-interactive-header-button:hover {
+.d3-scale-interactive-main button:hover {
   background-color: #111;
   color: #fff;
 }

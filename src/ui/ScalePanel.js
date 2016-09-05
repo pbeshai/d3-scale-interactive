@@ -46,20 +46,6 @@ export default class ScalePanel {
       .append('div')
         .attr('class', className('panel'));
 
-    this.reset = this.root.append('button')
-      .attr('class', className('header-button'))
-      .text('Reset')
-      .on('click', () => this.scaleProxy.reset());
-
-    // generate code button
-    this.root.append('button')
-      .attr('class', className('header-button'))
-      .text('Code')
-      .attr('alt', 'Output generated code to console')
-      .on('click', () => {
-        console.log(`const ${this.scaleProxy.name} = ${this.scaleProxy.generateCode()}`);
-      });
-
     this.header = this.root.append('h3')
       .attr('class', className('panel-header'))
       .on('click', this.toggleView);
@@ -67,9 +53,43 @@ export default class ScalePanel {
     this.inner = this.root.append('div')
       .attr('class', className('panel-inner'));
 
+    this.controls = this.inner.append('div')
+      .attr('class', className('scale-controls'));
 
     this.itemsContainer = this.inner.append('div')
       .attr('class', className('panel-items'));
+
+    // generate code button
+    this.controls.append('button')
+      .text('Code')
+      .attr('title', 'Output generated code to console')
+      .on('click', () => {
+        console.log(`const ${this.scaleProxy.name} = ${this.scaleProxy.generateCode()}`);
+      });
+
+    // send to window button
+    this.controls.append('button')
+      .text('Debug')
+      .attr('title', 'Add scale to window to debug in console')
+      .on('click', () => {
+        window._scales = window._scales || {};
+        const name = this.scaleProxy.name;
+        window._scales[name] = this.scaleProxy.proxyScale;
+        window._scales[`${name}Raw`] = this.scaleProxy.scale;
+        window._scales[`${name}ScaleProxy`] = this.scaleProxy;
+
+        console.log(`Added scale ${name} to window._scales['${name}']...`, this.scaleProxy.proxyScale);
+      });
+
+    this.controls.append('button')
+      .text('Stats')
+      .on('click', () => console.log('TODO stats'));
+
+    this.controls.append('button')
+      .attr('class', className('reset-button'))
+      .text('Reset')
+      .on('click', () => this.scaleProxy.reset());
+
 
     this.items = {};
   }
