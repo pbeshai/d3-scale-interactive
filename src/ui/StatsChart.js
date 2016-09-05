@@ -37,7 +37,7 @@ export default class StatsChart {
 
     this.xAxis = this.g.append('g')
       .attr('class', 'axis axis--x')
-      .attr('transform', `translate(0, ${innerHeight})`);
+      .attr('transform', `translate(0, ${this.innerHeight})`);
 
     this.yAxis = this.g.append('g')
       .attr('class', 'axis axis--y');
