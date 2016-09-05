@@ -1,1 +1,12 @@
-export default ['scaleSequential', 'scaleOrdinal', 'scaleLinear', 'scaleLog', 'scalePow'];
+export default [
+  'scaleSequential',
+  'scaleOrdinal',
+  'scaleBand',
+  'scalePoint',
+  'scaleLinear',
+  'scaleLog',
+  'scalePow',
+  'scaleQuantize',
+  'scaleQuantile',
+  'scaleThreshold',
+];

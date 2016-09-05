@@ -1,12 +1,15 @@
 /* eslint-disable */
+var categories = ['one', 'two', 'three', 'four', 'five'];
 function generateRandom(length) {
   var xRandomizer = d3.randomNormal(150, 30);
   var yRandomizer = d3.randomLogNormal(3, 1.2);
   var vRandomizer = d3.randomNormal(150, 50);
+  var catRandomizer = d3.randomNormal(2.5, 1);
   return d3.range(length).map(() => ({
     x: Math.round(xRandomizer()),
+    // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))]
     y: Math.round(yRandomizer()),
-    v: Math.round(vRandomizer())
+    v: Math.round(vRandomizer()),
   }));
 }
 
@@ -26,6 +29,13 @@ function setupChart(data) {
       .domain(d3.extent(data, d => d.x))
       .range([0, width]);
 
+  // switch to this for categorical
+  // x = d3.scaleInteractive('cat', updateChart)
+  // // x = d3
+      // .scalePoint()
+      // .domain(categories)
+      // .range([0, width]);
+
   y = d3.scaleInteractive('y', updateChart)
   // y = d3
       .scaleLinear()
@@ -34,7 +44,7 @@ function setupChart(data) {
 
 
   xAxis = d3.axisBottom(x);
-  yAxis = d3.axisLeft(y)
+  yAxis = d3.axisLeft(y);
 
   svg = d3.select('.chart-container').append('svg')
       .attr('width', width + margin.left + margin.right)
@@ -43,7 +53,7 @@ function setupChart(data) {
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 
-  x.domain(d3.extent(data, function(d) { return d.x; })).nice();
+  x.domain(d3.extent(data, function(d) { return d.x; })).nice(); // comment this out for categorical
   y.domain(d3.extent(data, function(d) { return d.y; })).nice();
 
   svg.append('g')
