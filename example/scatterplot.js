@@ -9,7 +9,7 @@ function generateRandom(length) {
     // data for linear:
     x: Math.round(xRandomizer()),
     // data for categorical:
-    // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))]
+    // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))],
     // data for time:
     // x: new Date(2016, Math.floor(Math.random() * 12), Math.ceil(Math.random() * 30)),
     y: Math.round(yRandomizer()),

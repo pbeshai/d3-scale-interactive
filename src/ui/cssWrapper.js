@@ -170,6 +170,7 @@ export default `
 }
 
 
+.d3-scale-interactive-main button.d3-scale-interactive-active,
 .d3-scale-interactive-main button:hover {
   background-color: #111;
   color: #fff;
@@ -179,5 +180,22 @@ export default `
   display: inline-block;
   height: 15px;
   border-radius: 0;
+}
+.d3-scale-interactive-stats-panel {
+  margin-bottom: 8px;
+}
+
+.d3-scale-interactive-stats-chart .axis path,
+.d3-scale-interactive-stats-chart .axis line {
+  stroke: #444;
+}
+.d3-scale-interactive-stats-chart .axis text {
+  fill: #777;
+}
+
+.d3-scale-interactive-stats-status {
+  font-style: italic;
+  color: #777;
+  font-size: 11px;
 }
 `;

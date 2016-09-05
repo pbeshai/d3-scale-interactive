@@ -24,6 +24,8 @@ const defaultScales = {
 
 // list of continuous scales
 const continuousScales = ['scaleLinear', 'scalePow', 'scaleLog', 'scaleTime', 'scaleUtc', 'scaleIdentity'];
+const ordinalScales = ['scaleOrdinal', 'scalePoint', 'scaleBand'];
+const timeScales = ['scaleTime', 'scaleUtc'];
 
 /**
  * Class for proxying a d3 scale so it can change type and keep stats
@@ -58,6 +60,14 @@ export default class ScaleProxy {
 
   isContinuous() {
     return continuousScales.includes(this.scaleType);
+  }
+
+  isOrdinal() {
+    return ordinalScales.includes(this.scaleType);
+  }
+
+  isTimeScale() {
+    return timeScales.includes(this.scaleType);
   }
 
   /**
@@ -291,7 +301,7 @@ export default class ScaleProxy {
    * @return {void}
    */
   statsReset() {
-    this.stats = { domainCounts: {}, rangeCounts: {} };
+    this.stats = { domainCounts: {}, domainHistogram: [], rangeCounts: {}, rangeHistogram: [] };
   }
 
   /**
@@ -302,7 +312,7 @@ export default class ScaleProxy {
    * @return {void}
    */
   statsRecordValueUsed(domainValue, rangeValue) {
-    const { domainCounts, rangeCounts } = this.stats;
+    const { domainCounts, rangeCounts, domainHistogram, rangeHistogram } = this.stats;
 
     if (!domainCounts[domainValue]) {
       domainCounts[domainValue] = 1;
@@ -315,6 +325,9 @@ export default class ScaleProxy {
     } else {
       rangeCounts[rangeValue] += 1;
     }
+
+    domainHistogram.push(domainValue);
+    rangeHistogram.push(rangeValue);
   }
 }
 
