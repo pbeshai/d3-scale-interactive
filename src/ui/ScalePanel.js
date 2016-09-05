@@ -14,6 +14,7 @@ export default class ScalePanel {
     // bind handlers
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleScalePropertyChange = this.handleScalePropertyChange.bind(this);
+    this.handleDomainNice = this.handleDomainNice.bind(this);
     this.handleDomainChange = this.handleScalePropertyChange.bind(this, 'domain');
     this.handleRangeChange = this.handleScalePropertyChange.bind(this, 'range');
     this.handleInterpolatorChange = this.handleScalePropertyChange.bind(this, 'interpolator');
@@ -69,6 +70,10 @@ export default class ScalePanel {
     this.render();
   }
 
+  handleDomainNice() {
+    this.scaleProxy.proxyScale.nice();
+  }
+
   handleTypeChange(newType) {
     this.scaleProxy.changeScaleType(newType);
   }
@@ -81,6 +86,8 @@ export default class ScalePanel {
     this.domainInput = renderComponent(this.domainInput, DomainInput, parentNode, {
       domain: this.scaleProxy.proxyScale.domain(),
       onChange: this.handleDomainChange,
+      onNice: this.handleDomainNice,
+      range: this.scaleProxy.proxyScale.range && this.scaleProxy.proxyScale.range(),
     });
   }
 

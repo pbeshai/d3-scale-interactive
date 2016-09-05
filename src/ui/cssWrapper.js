@@ -139,19 +139,27 @@ export default `
   display: none;
 }
 
+button,
 .d3-scale-interactive-reset-button {
-  float: right;
   font-size: 10px;
   text-transform: uppercase;
   display: inline-block;
-  padding: 6px 12px;
+  padding: 4px 12px;
   font-weight: 200;
   background-color: #333;
+  border: 0;
   color: #aaa;
   cursor: pointer;
+  margin: 0 4px 4px 0;
+}
+
+.d3-scale-interactive-reset-button {
+  float: right;
+  padding: 6px 12px;
   margin: -4px -4px 0 0;
 }
 
+button:hover,
 .d3-scale-interactive-reset-button:hover {
   background-color: #111;
   color: #fff;
