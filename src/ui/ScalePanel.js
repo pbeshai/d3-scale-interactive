@@ -4,6 +4,7 @@ import TypeSelector from './TypeSelector';
 import DomainInput from './DomainInput';
 import RangeInput from './RangeInput';
 import InterpolatorInput from './InterpolatorInput';
+import BooleanInput from './BooleanInput';
 
 export default class ScalePanel {
   constructor(parent, props) {
@@ -18,12 +19,14 @@ export default class ScalePanel {
     this.handleDomainChange = this.handleScalePropertyChange.bind(this, 'domain');
     this.handleRangeChange = this.handleScalePropertyChange.bind(this, 'range');
     this.handleInterpolatorChange = this.handleScalePropertyChange.bind(this, 'interpolator');
+    this.handleClampChange = this.handleScalePropertyChange.bind(this, 'clamp');
     this.toggleView = this.toggleView.bind(this);
 
     this.renderTypeSelector = this.renderTypeSelector.bind(this);
     this.renderDomainInput = this.renderDomainInput.bind(this);
     this.renderRangeInput = this.renderRangeInput.bind(this);
     this.renderInterpolatorInput = this.renderInterpolatorInput.bind(this);
+    this.renderClampInput = this.renderClampInput.bind(this);
 
     // attach listeners
     this.scaleProxy.on('update.scale-panel', () => this.render());
@@ -146,6 +149,13 @@ export default class ScalePanel {
     });
   }
 
+  renderClampInput(parentNode) {
+    this.clampInput = renderComponent(this.clampInput, BooleanInput, parentNode, {
+      value: this.scaleProxy.proxyScale.clamp(),
+      onChange: this.handleClampChange,
+    });
+  }
+
   /**
    * Render the items that show up in the panel to edit
    * e.g., Type, Domain, Range, Interpolator
@@ -156,6 +166,7 @@ export default class ScalePanel {
     this.renderItem('Range', this.renderRangeInput, 'range', 'rangeInput');
     this.renderItem('Interpolator', this.renderInterpolatorInput, 'interpolator',
       'interpolatorInput');
+    this.renderItem('Clamp', this.renderClampInput, 'clamp', 'clampInput');
   }
 
   renderItem(label, renderItem, scaleProp, stateKey) {
