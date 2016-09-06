@@ -194,10 +194,10 @@ export default `
   font-size: 10px;
   text-transform: uppercase;
   display: inline-block;
-  padding: 4px 12px;
+  padding: 4px 8px;
   font-weight: 200;
   background-color: #333;
-  border: 0;
+  border: 1px solid transparent;
   color: #aaa;
   cursor: pointer;
   margin: 0 4px 4px 0;
@@ -208,6 +208,8 @@ export default `
 .d3-scale-interactive-main button:hover {
   background-color: #111;
   color: #fff;
+  border-color: #444;
+
 }
 
 .d3-scale-interactive-color-bar-box {
