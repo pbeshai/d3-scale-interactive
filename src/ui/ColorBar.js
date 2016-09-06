@@ -27,7 +27,7 @@ export default class ColorBar {
     const { colors } = this.props;
     const binding = this.root.selectAll('div').data(colors);
 
-    const availableWidth = this.root.node().getBoundingClientRect().width - 18; // leave room for a scrollbar
+    const availableWidth = 240;
     const colorWidth = (availableWidth) / colors.length;
 
     // ENTER
