@@ -4,9 +4,9 @@ import ScalePanel from './ScalePanel';
 import css from './cssWrapper';
 
 export default class MainContainer {
-  constructor(parent, props) {
+  constructor(parent, props = {}) {
     this.parent = parent;
-    this.visible = true;
+    this.visible = !props.startHidden;
 
     this.scaleProxies = [];
     this.panels = [];

@@ -17,6 +17,9 @@ function generateRandom(length) {
   }));
 }
 
+// set global options
+// d3.scaleInteractive.options({ startHidden: true });
+
 function setupChart(data) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 800 - margin.left - margin.right,

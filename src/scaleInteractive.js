@@ -3,6 +3,9 @@ import ScaleProxy from './ScaleProxy';
 import MainContainer from './ui/MainContainer';
 import { className } from './ui/utils';
 
+const activeScales = {};
+const options = { startHidden: false };
+
 /**
  * Make a scale interactive.
  *
@@ -25,21 +28,36 @@ import { className } from './ui/utils';
  *   to get typical behavior.
  */
 export default function scaleInteractive(name, update) {
-  const scaleProxy = new ScaleProxy(name);
-
   // create a new container if necessary, otherwise add to existing
   const main = select(`.${className('main')}`);
   let mainContainer;
   if (main.empty()) {
-    mainContainer = new MainContainer(document.body);
+    mainContainer = new MainContainer(document.body, options);
   } else {
     mainContainer = main.datum();
   }
 
-  mainContainer.addScale(scaleProxy);
+  let scaleProxy;
+  if (!activeScales[name]) {
+    scaleProxy = new ScaleProxy(name);
+    activeScales[name] = scaleProxy;
+    mainContainer.addScale(scaleProxy);
+  } else {
+    scaleProxy = activeScales[name];
+  }
 
   // listen for updates and update the chart accordingly
   scaleProxy.on('update.chart', () => { update(); });
 
   return scaleProxy;
 }
+
+/**
+ * Function to set global options for the interactive scale
+ * Currently, the options are:
+ *
+ * -  {Boolean} **startHidden**=false If set to true, the UI starts collapsed
+ */
+scaleInteractive.options = function scaleInteractiveOptions(newOptions) {
+  return Object.assign(options, newOptions);
+};
