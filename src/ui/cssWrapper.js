@@ -40,10 +40,27 @@ export default `
 }
 
 .d3-scale-interactive-panel {
+  position: relative;
   background: rgba(0, 0, 0, 0.3);
   padding: 10px;
   margin-bottom: 5px;
   border-bottom: 1px solid #111;
+}
+
+.d3-scale-interactive-message-container {
+  pointer-events: none;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  padding: 5px 15px;
+  background: #054e4e;
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.d3-scale-interactive-message-container.d3-scale-interactive-visible {
+  opacity: 1;
+  transition: opacity .1s;
 }
 
 .d3-scale-interactive-scale-controls {

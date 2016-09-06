@@ -71,6 +71,9 @@ export default class ScalePanel {
       .append('div')
         .attr('class', className('panel'));
 
+    this.messageContainer = this.root.append('div')
+      .attr('class', className('message-container'));
+
     this.header = this.root.append('h3')
       .attr('class', className('panel-header'))
       .on('click', this.toggleView);
@@ -91,6 +94,8 @@ export default class ScalePanel {
       .text('Code')
       .attr('title', 'Output generated code to console')
       .on('click', () => {
+        this.showMessage('Code printed in console');
+
         console.log(`const ${this.scaleProxy.name} = ${this.scaleProxy.generateCode()}`);
       });
 
@@ -99,15 +104,17 @@ export default class ScalePanel {
       .text('Debug')
       .attr('title', 'Add scale to window to debug in console')
       .on('click', () => {
+        this.showMessage('Added to console');
+
         /* eslint-disable no-underscore-dangle */
         window._scales = window._scales || {};
         const name = this.scaleProxy.name;
         window._scales[name] = this.scaleProxy.proxyScale;
         window._scales[`${name}Raw`] = this.scaleProxy.scale;
         window._scales[`${name}ScaleProxy`] = this.scaleProxy;
-        /* eslint-enable no-underscore-dangle */
 
-        console.log(`Added scale ${name} to window._scales['${name}']...`, this.scaleProxy.proxyScale);
+        console.log(`Added scale ${name} to _scales['${name}']...\n`, window._scales[name]);
+        /* eslint-enable no-underscore-dangle */
       });
 
     this.statsButton = this.controls.append('button')
@@ -121,6 +128,23 @@ export default class ScalePanel {
 
 
     this.items = {};
+  }
+
+  // shows an ephemeral message in the panel header
+  showMessage(message) {
+    this.messageContainer.text(message);
+    this.messageContainer.classed(className('visible'), true);
+
+    const messageVisibleTime = 1000;
+
+    if (this.messageTimer) {
+      clearTimeout(this.messageTimer);
+      this.messageTimer = null;
+    }
+    this.messageTimer = setTimeout(() => {
+      this.messageContainer.classed(className('visible'), false);
+      this.messageTimer = null;
+    }, messageVisibleTime);
   }
 
   toggleStats() {
