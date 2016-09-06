@@ -8,7 +8,7 @@ export default `
   position: fixed;
   right: 10px;
   top: 0px;
-  background: rgba(0, 0, 0, 0.8);
+  background: #242424;
   font-size: 12px;
   width: 280px;
   color: #fff;
@@ -104,6 +104,7 @@ export default `
 
 .d3-scale-interactive-panel input {
   font-family: 'Source Code Pro', 'Monaco', 'Consolas', monospace;
+  color: #000;
 }
 
 .d3-scale-interactive-input-entry-field {
@@ -117,6 +118,7 @@ export default `
 
 .d3-scale-interactive-input-entry-add,
 .d3-scale-interactive-input-entry-remove {
+  box-sizing: content-box;
   display: inline-block;
   padding: 5px;
   background: #333;
