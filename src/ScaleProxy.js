@@ -292,7 +292,9 @@ export default class ScaleProxy {
    */
   reset() {
     // be sure to create a copy so we do not modify the original scale for future resets
-    this.changeScale(this.originalScale.copy(), this.originalScaleType);
+    if (this.originalScale) {
+      this.changeScale(this.originalScale.copy(), this.originalScaleType);
+    }
   }
 
   /**
