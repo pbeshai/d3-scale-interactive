@@ -147,7 +147,7 @@ export default class ArrayInput {
     this.dragStartValue = undefined;
   }
 
-  renderEntry(entry, index, removable) {
+  renderEntry(entry, index, removable, addable) {
     let root = this.entries[index];
 
     if (!root) {
@@ -204,7 +204,12 @@ export default class ArrayInput {
         });
     }
 
-    root.select(`.${className('input-entry-remove')}`).classed(className('hidden'), !removable);
+    root.select(`.${className('input-entry-remove')}`)
+      .style('display', removable ? '' : 'none');
+
+    root.select(`.${className('input-entry-add')}`)
+      .style('display', addable ? '' : 'none');
+
     root.attr('data-index', index);
     root.select(`.${className('input-entry-color')}`)
         .classed(className('hidden'), true);
@@ -242,11 +247,11 @@ export default class ArrayInput {
       this.setup();
     }
 
-    const { values, minLength } = this.props;
+    const { values, minLength, maxLength } = this.props;
     const removable = values.length > minLength;
-
+    const addable = maxLength === undefined || values.length < maxLength;
     values.forEach((entry, i) => {
-      this.renderEntry(entry, i, removable);
+      this.renderEntry(entry, i, removable, addable);
     });
 
     // remove any excess entries

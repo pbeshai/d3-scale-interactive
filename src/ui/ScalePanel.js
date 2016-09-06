@@ -179,6 +179,7 @@ export default class ScalePanel {
       domain: this.scaleProxy.proxyScale.domain(),
       onChange: this.handleDomainChange,
       onNice: this.handleDomainNice,
+      maxLength: this.scaleProxy.scaleType === 'scaleSequential' ? 2 : undefined,
       range: this.scaleProxy.proxyScale.range && this.scaleProxy.proxyScale.range(),
     });
   }

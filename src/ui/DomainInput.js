@@ -51,13 +51,14 @@ export default class DomainInput {
       this.setup();
     }
 
-    const { domain, onChange, range } = this.props;
+    const { domain, onChange, range, maxLength } = this.props;
 
     this.matchRange.style('display', range ? '' : 'none');
 
     this.arrayInput = renderComponent(this.arrayInput, ArrayInput, this.inner.node(), {
       values: domain,
       minLength: 2,
+      maxLength,
       onChange,
     });
   }
