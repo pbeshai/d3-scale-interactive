@@ -77,16 +77,23 @@ Example usage:
 ```js
 var x = d3.scaleInteractive('x', updateChart).scaleLinear().domain([0, 10]).range([15, 100]);
 ...
+
 function updateChart(newData) {
   d3.selectAll('rect').data(newData)
      .attr('x', function (d) { return x(d.x); });
+  ...
 }
+
 ```
 
 
 <a href="#scale-interactive-options" name="scale-interactive-options">#</a> **scaleInteractive.options**(*options*)
 
-Updates the global scale interactive options with an *options* object. Currently there is only one option: **startHidden** (default: `false`) which initializes the main UI to begin collapsed. These options must be set before any other call to scaleInteractive as they are not read past initialization.
+Updates the global scale interactive options with an *options* object. Currently there is only one option: 
+
+- **startHidden** (default: `false`): initializes the main UI to begin collapsed
+ 
+These options must be set before any other call to scaleInteractive as they are not read past initialization.
 
 Example usage:
 
