@@ -47,6 +47,21 @@ export default `
   border-bottom: 1px solid #111;
 }
 
+
+.d3-scale-interactive-type-selector select {
+  margin-right: 6px;
+}
+
+.d3-scale-interactive-panel a {
+  color: #039898;
+  text-decoration: none;
+}
+
+.d3-scale-interactive-panel a:hover {
+  text-decoration: underline;
+  color: #04b5b5;
+}
+
 .d3-scale-interactive-message-container {
   pointer-events: none;
   position: absolute;

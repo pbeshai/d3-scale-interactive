@@ -38,6 +38,10 @@ export default class TypeSelector {
         .property('value', scaleFuncName)
         .text(scaleFuncName);
     });
+
+    this.docsLink = this.root.append('a')
+      .attr('target', '_blank')
+      .text('docs');
   }
 
   render() {
@@ -45,6 +49,9 @@ export default class TypeSelector {
       this.setup();
     }
 
+    const { type } = this.props;
+
+    this.docsLink.attr('href', `https://github.com/d3/d3-scale#${type}`);
     this.select.property('value', this.props.type);
   }
 }
