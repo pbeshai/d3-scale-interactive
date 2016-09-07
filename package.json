@@ -1,6 +1,6 @@
 {
   "name": "d3-scale-interactive",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "An interactive UI for editing d3 v4 scales in your browser",
   "author": "Peter Beshai <peter.beshai@gmail.com> (http://github.com/pbeshai)",
   "keywords": [
