@@ -9,9 +9,9 @@ Modify your [d3-scales](https://github.com/d3/d3-scale) interactively in your br
 ![d3-scale-interactive-demo-1 1 2](https://cloud.githubusercontent.com/assets/793847/18312799/7d9ceeb6-74d9-11e6-85e1-dff08eaa2ef0.gif)
 
 
-## Idea
+## What does it do?
 
-What if you could interactively play with your scales in any vis, just by replacing your initialization of the scales 
+Interactively play with your scales in any vis, just by replacing your initialization of the scales
 
 ```js
 const colorScale = d3.scaleSequential(...);
@@ -23,7 +23,7 @@ with
 const colorScale = d3.scaleInteractive('color', updateChart).scaleSequential(...);
 ```
 
-This way it's easy to develop with/turn on and off. Here `updateChart` is the function called to re-draw a chart with updated properties or data.
+When you're happy with your scales, just remove the `.scaleInteractive()` call and it is back to normal. Here `updateChart` is the function called to re-draw a chart with updated properties or data.
 
 ### Example
 Original
@@ -44,7 +44,7 @@ color = d3.scaleInteractive('color', updateChart)
 
 ## User Interface Controls
 
-Each scale gets its own panel in the user interface that can be collapsed or expanded by clicking the header. Beneath the header are five commands: Pin, Code, Debug, Stats, and Reset. 
+Each scale gets its own panel in the user interface that can be collapsed or expanded by clicking the header. Beneath the header are five commands: Pin, Code, Debug, Stats, and Reset.
 
 ![image](https://cloud.githubusercontent.com/assets/793847/18295536/2cdd0ec0-7470-11e6-912e-176d906a59d8.png)
 
@@ -54,7 +54,7 @@ If your update callback recreates your scale or modifies some properties of the 
 
 ### Code
 
-Outputs the javascript code needed to recreate the scale to the browser's console. 
+Outputs the javascript code needed to recreate the scale to the browser's console.
 
 ### Debug
 
@@ -66,7 +66,7 @@ Adds the scale to the global `_scales` object allowing you to access your scale 
 
 ### Stats
 
-Displays histograms or bar charts of the domain and range values used by the scale. This control is a toggle. 
+Displays histograms or bar charts of the domain and range values used by the scale. This control is a toggle.
 
 ![image](https://cloud.githubusercontent.com/assets/793847/18295496/f3636ee6-746f-11e6-8328-b6983458c883.png)
 
@@ -101,7 +101,7 @@ If you use NPM, `npm install d3-scale-interactive`. Otherwise, download the [lat
 
 <a href="#scale-interactive" name="scale-interactive">#</a> **scaleInteractive**(*name*, *updateFunction*)
 
-Creates an interactive UI in the browser to modify scale parameters within. You must provide a unique *name* for the scale, as well as *updateFunction* - the function used to redraw your visualization when data or other properties change. 
+Creates an interactive UI in the browser to modify scale parameters within. You must provide a unique *name* for the scale, as well as *updateFunction* - the function used to redraw your visualization when data or other properties change.
 
 Example usage:
 
@@ -120,10 +120,10 @@ function updateChart(newData) {
 
 <a href="#scale-interactive-options" name="scale-interactive-options">#</a> **scaleInteractive.options**(*options*)
 
-Updates the global scale interactive options with an *options* object. Currently there is only one option: 
+Updates the global scale interactive options with an *options* object. Currently there is only one option:
 
 - **startHidden** (default: `false`): initializes the main UI to begin collapsed
- 
+
 These options must be set before any other call to scaleInteractive as they are not read past initialization.
 
 Example usage:
