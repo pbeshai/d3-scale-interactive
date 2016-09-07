@@ -67,13 +67,16 @@ export default class StatsHistogram {
 
     const yScale = scaleLinear().range([innerHeight, 0]);
 
-    const xExtent = extent(data);
+    // filter out infinite values
+    const filteredData = data.filter(d => d < Infinity && d > -Infinity);
+
+    const xExtent = extent(filteredData);
     xScale.domain(xExtent);
     this.xAxis.call(axisBottom(xScale).ticks(7));
 
     const bins = histogram()
       .domain(xScale.domain())
-      .thresholds(xScale.ticks(20))(data);
+      .thresholds(xScale.ticks(20))(filteredData);
 
     yScale.domain([0, max(bins, d => d.length)]);
     this.yAxis.call(axisLeft(yScale).ticks(4));
