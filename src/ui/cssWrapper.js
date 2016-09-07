@@ -189,6 +189,10 @@ export default `
   float: right;
 }
 
+.d3-scale-interactive-main button::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
 
 .d3-scale-interactive-main button {
   font-size: 10px;
