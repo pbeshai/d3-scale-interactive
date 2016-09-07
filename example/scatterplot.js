@@ -5,16 +5,18 @@ function generateRandom(length) {
   var yRandomizer = d3.randomLogNormal(3, 1.2);
   var vRandomizer = d3.randomNormal(150, 50);
   var catRandomizer = d3.randomNormal(2.5, 1);
-  return d3.range(length).map(() => ({
-    // data for linear:
-    x: Math.round(xRandomizer()),
-    // data for categorical:
-    // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))],
-    // data for time:
-    // x: new Date(2016, Math.floor(Math.random() * 12), Math.ceil(Math.random() * 30)),
-    y: Math.round(yRandomizer()),
-    v: Math.round(vRandomizer()),
-  }));
+  return d3.range(length).map(function () {
+    return {
+      // data for linear:
+      x: Math.round(xRandomizer()),
+      // data for categorical:
+      // x: categories[Math.min(categories.length - 1, Math.max(0, Math.floor(catRandomizer())))],
+      // data for time:
+      // x: new Date(2016, Math.floor(Math.random() * 12), Math.ceil(Math.random() * 30)),
+      y: Math.round(yRandomizer()),
+      v: Math.round(vRandomizer()),
+    };
+  });
 }
 
 // set global options
@@ -28,19 +30,19 @@ function setupChart(data) {
   color = d3.scaleInteractive('color', updateChart)
     .scaleSequential(d3.interpolateMagma)
     // .scaleOrdinal(d3.schemeCategory10)
-    .domain(d3.extent(data, d => d.v));
+    .domain(d3.extent(data, function (d) { return d.v; }));
 
   x = d3.scaleInteractive('x', updateChart)
   // x = d3
       .scaleLinear()
-      .domain(d3.extent(data, d => d.x))
+      .domain(d3.extent(data, function (d) { return d.x; }))
       .range([0, width]);
 
   // switch to this for time
   // x = d3.scaleInteractive('x', updateChart)
   // // x = d3
       // .scaleTime()
-      // .domain(d3.extent(data, d => d.x))
+      // .domain(d3.extent(data, function (d) { return d.x; }))
       // .range([0, width]);
 
 
@@ -54,7 +56,7 @@ function setupChart(data) {
   y = d3.scaleInteractive('y', updateChart)
   // y = d3
       .scaleLinear()
-      .domain(d3.extent(data, d => d.y))
+      .domain(d3.extent(data, function (d) { return d.y; }))
       .range([height, 0]);
 
 
@@ -82,7 +84,9 @@ function setupChart(data) {
 }
 
 
-function updateChart(newData = data) {
+function updateChart(newData) {
+  newData = newData || data;
+
   // update axes
   svg.select('.x.axis').call(xAxis);
   svg.select('.y.axis').call(yAxis);
@@ -104,7 +108,7 @@ function updateChart(newData = data) {
       .attr('cy', function(d) { return y(d.y); })
       .style('fill', function(d) { return color(d.v); })
       .style('stroke', function (d) {
-        const colorValue = d3.color(color(d.v));
+        var colorValue = d3.color(color(d.v));
 
         return colorValue ? colorValue.darker() : null });
 
