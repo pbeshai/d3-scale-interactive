@@ -10,9 +10,7 @@ Modify your [d3-scales](https://github.com/d3/d3-scale) interactively in your br
 
 ## Idea
 
-Idea
-
-The idea: what if you could interactively play with your scales in any vis, just by replacing your initialization of the scales from
+What if you could interactively play with your scales in any vis, just by replacing your initialization of the scales 
 
 ```js
 const colorScale = d3.scaleSequential(...);
