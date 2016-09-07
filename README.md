@@ -43,6 +43,38 @@ color = d3.scaleInteractive('color', updateChart)
   .domain(d3.extent(data, d => d.v));
 ```
 
+## User Interface Controls
+
+Each scale gets its own panel in the user interface that can be collapsed or expanded by clicking the header. Beneath the header are five commands: Pin, Code, Debug, Stats, and Reset. 
+
+![image](https://cloud.githubusercontent.com/assets/793847/18295536/2cdd0ec0-7470-11e6-912e-176d906a59d8.png)
+
+### Pin
+
+If your update callback recreates your scale or modifies some properties of the scale, you may want to pin the scale in the UI. This prevents all changes made outside the UI from affecting the scale. This control is a toggle.
+
+### Code
+
+Outputs the javascript code needed to recreate the scale to the browser's console. 
+
+### Debug
+
+Adds the scale to the global `_scales` object allowing you to access your scale in the console. Each scale will have three entries in `_scales`. If your scale name was `color`, you'd see:
+
+- `_scales.color` - The scale object used by scaleInteractive. Updating values to this will be reflected automatically in the UI and in the stats collection.
+- `_scales.colorRaw` - The d3 scale that is wrapped by scaleInteractive.
+- `_scales.colorScaleProxy` - The [ScaleProxy](https://github.com/pbeshai/d3-scale-interactive/blob/master/src/ScaleProxy.js) object used by scaleInteractive.
+
+### Stats
+
+Displays histograms or bar charts of the domain and range values used by the scale. This control is a toggle. 
+
+![image](https://cloud.githubusercontent.com/assets/793847/18295496/f3636ee6-746f-11e6-8328-b6983458c883.png)
+
+### Reset
+
+Resets the changes made through the scaleInteractive user interface.
+
 
 ## Development
 
