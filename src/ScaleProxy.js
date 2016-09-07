@@ -43,6 +43,7 @@ export default class ScaleProxy {
     this.dispatch = dispatch(Events.update, Events.proxySet);
     this.statsReset();
 
+    this.pinned = false;
     this.scale = null;
     this.originalScale = null;
     this.proxyScale = this.proxyScale.bind(this);
@@ -68,6 +69,14 @@ export default class ScaleProxy {
 
   isTimeScale() {
     return timeScales.includes(this.scaleType);
+  }
+
+  pin() {
+    this.pinned = true;
+  }
+
+  unpin() {
+    this.pinned = false;
   }
 
   /**
@@ -229,7 +238,7 @@ export default class ScaleProxy {
       this.saveOriginalScale();
     }
 
-    this.proxyScale[property](value);
+    this.scale[property](value);
     this.statsReset();
     this.update();
     return this.proxyScale;
@@ -269,12 +278,19 @@ export default class ScaleProxy {
     // add in needed keys
     newScaleKeys.forEach(scaleKey => {
       this.proxyScale[scaleKey] = (...args) => {
+        // check for pinned and a setter -- if so, ignore the setter
+        if (this.pinned) {
+          if (args.length || scaleKey === 'nice') {
+            return this.proxyScale;
+          }
+        }
+
         const result = this.scale[scaleKey](...args);
 
         // if the function returns the scale, return the proxy scale
         if (result === this.scale) {
           // this implies it was a setter
-          this.dispatch.call(Events.proxySet, this, scaleKey, args);
+          this.dispatch.call(Events.proxySet);
 
           return this.proxyScale;
         }

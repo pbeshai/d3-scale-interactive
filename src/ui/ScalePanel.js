@@ -89,6 +89,20 @@ export default class ScalePanel {
     this.itemsContainer = this.inner.append('div')
       .attr('class', className('panel-items'));
 
+    this.pinButton = this.controls.append('button')
+      .text('Pin')
+      .attr('title', 'Pin these settings - ignores scale modifications made outside of the UI')
+      .on('click', () => {
+        if (this.scaleProxy.pinned) {
+          this.showMessage('Using external scale changes');
+          this.scaleProxy.unpin();
+        } else {
+          this.showMessage('Ignoring external scale changes');
+          this.scaleProxy.pin();
+        }
+        this.pinButton.classed(className('active'), this.scaleProxy.pinned);
+      });
+
     // generate code button
     this.controls.append('button')
       .text('Code')
