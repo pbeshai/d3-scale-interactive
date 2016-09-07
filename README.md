@@ -6,7 +6,7 @@ Demo: http://peterbeshai.com/vis/d3-scale-interactive/
 
 Modify your [d3-scales](https://github.com/d3/d3-scale) interactively in your browser with this plugin. You can change nearly all aspects of the scale via the user interface and see your charts update dynamically.
 
-![d3-scale-interactive-demo](https://cloud.githubusercontent.com/assets/793847/18257484/5f7d617e-7392-11e6-8bd1-c49a4eca94d2.gif)
+![d3-scale-interactive-demo-1 1 2](https://cloud.githubusercontent.com/assets/793847/18300066/c1a66b6e-7493-11e6-9360-9cd188d518d5.gif)
 
 ## Idea
 
