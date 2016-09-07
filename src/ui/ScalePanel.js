@@ -330,7 +330,9 @@ export default class ScalePanel {
     // if scaleProp is provided, only render if the scale has it, otherwise remove
     // e.g. don't render `interpolator` if no interpolator is available on the scale
     if (scaleProp) {
-      if (this.scaleProxy.proxyScale[scaleProp] == null) {
+      // if scale doesn't have this prop or it is faked
+      if (this.scaleProxy.proxyScale[scaleProp] == null || this.scaleProxy.fakedKeys[scaleProp]) {
+        // remove the item if we have it currently
         if (this.items[label]) {
           this.items[label].remove();
           delete this.items[label];

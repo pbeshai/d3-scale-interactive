@@ -43,6 +43,7 @@ export default class ScaleProxy {
     this.dispatch = dispatch(Events.update, Events.proxySet);
     this.statsReset();
 
+    this.fakedKeys = {};
     this.pinned = false;
     this.scale = null;
     this.originalScale = null;
@@ -165,10 +166,20 @@ export default class ScaleProxy {
    *
    * @param {Function} scale The new active scale to set (e.g. d3.scaleLinear())
    * @param {String} [scaleType] A key for identifying the type of scale being set
-   * @param {Boolean} [skipUpdate=false] Skip update, typically used if called from user code.
+   * @param {Boolean} [fromUser=false] Scale change came from d3.scaleInteractive().scaleLinear() or equivalent.
+   *   Can be used to skip update and be ignored if pinned.
+   *
    * @return {Function} the proxy scale
    */
-  changeScale(scale, scaleType, skipUpdate) {
+  changeScale(scale, scaleType, fromUser) {
+    if (fromUser && this.pinned) {
+      this.statsReset();
+      // add in no-ops for this type of scale
+      this.fakeMissingScaleFunctions(scale);
+
+      return this.proxyScale;
+    }
+
     // handle special conversions
     if (this.scaleType === 'scaleSequential') {
       // sequential doesn't have a range, so take the ends of the domain to initialize our range
@@ -187,7 +198,7 @@ export default class ScaleProxy {
     this.updateProxyScaleFunctions(scale);
     this.statsReset();
 
-    if (!skipUpdate) {
+    if (!fromUser) {
       this.update();
     }
 
@@ -270,6 +281,9 @@ export default class ScaleProxy {
   updateProxyScaleFunctions(scale) {
     const newScaleKeys = Object.keys(scale);
 
+    // clear faked keys list
+    this.fakedKeys = {};
+
     // remove excess keys
     Object.keys(this.proxyScale)
       .filter(proxyKey => !newScaleKeys.includes(proxyKey))
@@ -299,6 +313,37 @@ export default class ScaleProxy {
         return result;
       };
     });
+  }
+
+  /**
+   * Fake having functions from the scale to prevent errors in user code
+   * when we skip switching to the specified scale type due to being pinned.
+   * Not perfect, but hopefully helps in a few cases.
+   *
+   * @param {Function} scale (e.g. d3.scaleLinear())
+   */
+  fakeMissingScaleFunctions(scale) {
+    const proxyKeys = Object.keys(this.proxyScale);
+
+    // find the ones we do not currently have
+    const missingKeys = Object.keys(scale).filter(newScaleKey => !proxyKeys.includes(newScaleKey));
+
+    // add in missing keys
+    missingKeys.forEach(scaleKey => {
+      this.proxyScale[scaleKey] = (...args) => {
+        if (args.length || scaleKey === 'nice') {
+          return this.proxyScale;
+        }
+
+        // otherwise return an empty object... hopefully this mutes enough errors.
+        return {};
+      };
+    });
+
+    this.fakedKeys = missingKeys.reduce((faked, key) => {
+      faked[key] = true;
+      return faked;
+    }, {});
   }
 
   /**
